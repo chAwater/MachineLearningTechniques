@@ -32,17 +32,34 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ---
 
-## Lecture 1: 01 - Linear Support Vector Machine
+## Lecture 1: Linear Support Vector Machine
 
-——
+—— 介绍边界的概念
+
+### 最大边界的线性分类器
 
 先回顾一下线性分类问题：
 - <img src="http://latex.codecogs.com/svg.latex?h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x})"/>
 - PLA 算法
 
-对于一些问题，可能存在多种 PLA 的解都可以把数据分开，得到这些解取决于把数据放入 PLA 算法的顺序，并且看上去“一样好”，但是我们 **人类** 会倾向于选择最右边的这个。
+对于一些问题，可能存在多种 PLA 的解都可以把数据分开，得到这些解取决于把数据放入 PLA 算法的顺序，并且看上去“一样好”。
 
-<div align=center><img width="70%" src="./Snapshot/Snap01.png"/></br></br></div>
+![](./Snapshot/Snap01.png)
+
+但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些噪声的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪声、误差。
+
+所以我们希望 **每个点都和我们的线距离最远** ，也可以说我们希望我们能够找到一个 **最胖** 的线，这个线离它最近的点的距离最远。
+这个线有多“胖”，就是说这个线的边界有多大，称为 **边界 (margin)**。
+
+总结一下：
+- 找到一个可以正确区分数据的线性分类器
+- 得到每个数据和这个线性分类器的距离，取最小的距离作为边界
+- 最大化这个边界
+
+![](./Snapshot/Snap02.png)
+
+---
+
 
 
 
