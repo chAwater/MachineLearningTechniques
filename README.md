@@ -23,6 +23,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 《机器学习技法》更进一步的关注在 **特征转换** 的一些相关技术，让学生能够更专业的了解和使用机器学习。
 
+- 需要先学习《机器学习基石》再学习《机器学习技法》
+
 ### 其他支持
 
 - [<img class="emoji" title=":atom:" alt=":atom:" src="https://github.githubassets.com/images/icons/emoji/atom.png" height="20" width="20" align="absmiddle"> Atom](https://atom.io)
@@ -52,7 +54,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 这个线有多“胖”，就是说这个线的边界有多大，称为 **边界 (margin)**。
 
 总结一下：
-- 找到一个可以正确区分数据的线性分类器
+- 找到一个可以正确区分数据的线性分类器（超平面）
 - 得到每个数据和这个线性分类器的距离，取最小的距离作为边界
 - 最大化这个边界
 
@@ -60,7 +62,28 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ---
 
+### 简化问题
+
+首先，需要把线性分类问题中的 w<sub>0</sub> 单独拿出来讨论，称之为 b，并把 x<sub>0</sub> 从原先的 x 中去掉：
+
+<img src="http://latex.codecogs.com/svg.latex?h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x}+b)"/>
+
+对于每个数据点和分类器（超平面）之间的距离：
+- 考虑超平面上的任意一点 x<sup>'</sup>
+- w 与超平面上任意一点的乘积为 0 ，因此 w 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?\mathbf{w}^T\mathbf{x'}+b=0"/>
+）
+- 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
+- 因为这个分类器（超平面）可以区分数据，因此有 <img src="http://latex.codecogs.com/svg.latex?\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0"/>
+
+所以距离可以简化为：
+<img src="http://latex.codecogs.com/svg.latex?\mathrm{distance}(\mathbf{x},b,\mathbf{w}))=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)"/>
 
 
+
+---
+
+[Issues #1]
+
+---
 
 <!--  -->
