@@ -73,12 +73,17 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 - w 与超平面上任意一点的乘积为 0 ，因此 w 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?\mathbf{w}^T\mathbf{x'}+b=0"/>
 ）
 - 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
-- 因为这个分类器（超平面）可以区分数据，因此有 <img src="http://latex.codecogs.com/svg.latex?\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0"/>
+- 因为这数据点可以被分类器（超平面）区分，因此有 <img src="http://latex.codecogs.com/svg.latex?\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0"/>
 
 所以距离可以简化为：
+
 <img src="http://latex.codecogs.com/svg.latex?\mathrm{distance}(\mathbf{x},b,\mathbf{w}))=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)"/>
 
+---
 
+对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
+因此，我们可以对这个向量进行一个特殊的缩放，使
+<img src="http://latex.codecogs.com/svg.latex?\mathop{min}_{n=1,...,N}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1"/>
 
 ---
 
