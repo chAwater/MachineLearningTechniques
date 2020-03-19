@@ -37,7 +37,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ## Lecture 1: Linear Support Vector Machine
 
 —— 介绍边界的概念
-—— 介绍支持向量机、名字的由来和解法
+—— 介绍支持向量机、名字的由来
+—— 介绍支持向量机的一般解法和理论保证
 
 ### 最大边界的线性分类器
 
@@ -122,14 +123,14 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 支持向量机
 
-这种算法被称为`支持向量机`，是因为在超平面`边界`上的那些数据点决定了这个超平面和边界，而其他地方的数据点对于边界和超平面来说是不必要的。
+这种算法被称为`支持向量机`(Support Vector Machine, SVM)，是因为在超平面`边界`上的那些数据点决定了这个超平面和边界，而其他地方的数据点对于边界和超平面来说是不必要的。
 这些在超平面边界上的点被称为`支持向量`（的候选），因为这些点就好像在支撑着这个超平面一样。
 
 那么我们继续来求解这个问题，这个问题有一些特性：
 - 这个问题是`凸的二次函数`
 - 这个问题是 **w** 和 b 的`线性运算`
 
-具有这种特性的问题被称为`二次规划`( quadratic programming, QP )，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。
+具有这种特性的问题被称为`二次规划`( Quadratic Programming, QP )，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。
 
 ![](./Snapshot/Snap04.png)
 
@@ -137,6 +138,30 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ---
 
-### 
+### 支持向量机的理论保证
+
+首先我们来比较一下`正则化`（参见《基石》）和 SVM 在最小化和条件上的区别：
+
+|                |              Minimize               |                 Constraint                 |
+|:--------------:|:-----------------------------------:|:------------------------------------------:|
+| Regularization |         <i>E</i><sub>in</sub>       | <b>w</b><sup><i>T</i></sup><b>w</b> &le; C |
+|       SVM      | <b>w</b><sup><i>T</i></sup><b>w</b> |   <i>E</i><sub>in</sub>=0 [and scaling]    |
+
+所以 SVM 和正则化有些类似。
+
+---
+
+另外，我们再来讨论一下 SVM 的 `VC Dimension`（参见《基石》）。首先来讨论一下 `Dichotomy`（参见《基石》），当没有`边界`的时候，一个线性分类器在一些数据上可以 `Shatter`（参见《基石》）。
+
+但是当我们加入了`边界`之后，在一些情况下可能就不能`Shatter`了，因为原先能够`Shatter`的分类器没有足够大的`边界`。这样就相当于减少了 `Dichotomy` 也就是减少了 `VC Dimension`，因此有更好的 `Generalization`。
+
+这种方法相当于再数据层面增加了一些条件来控制`VC Dimension`。
+
+![](./Snapshot/Snap05.png)
+
+---
+---
+---
+
 
 <!--  -->
