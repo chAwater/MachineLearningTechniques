@@ -83,7 +83,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
 因此，我们可以对这个向量进行一个特殊的缩放，使
-<img src="http://latex.codecogs.com/svg.latex?\mathop{min}_{n=1,...,N}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1"/>
+<img src="http://latex.codecogs.com/svg.latex?\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1"/>
 
 ---
 
