@@ -41,8 +41,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ### 最大边界的线性分类器
 
 先回顾一下线性分类问题：
-<!-- - <img src="http://latex.codecogs.com/svg.latex?h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x})"/> -->
-- ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}\))
+- <img src="http://latex.codecogs.com/svg.latex?{h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x})}"/>
+<!-- - ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}\)) -->
 - PLA 算法
 
 对于一些问题，可能存在多种 PLA 的解都可以把数据分开，得到这些解取决于把数据放入 PLA 算法的顺序，并且看上去“一样好”。
@@ -67,28 +67,31 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 首先，需要把线性分类问题中的 w<sub>0</sub> 单独拿出来讨论，称之为 b，并把 x<sub>0</sub> 从原先的 x 中去掉：
 
-<!-- <img src="http://latex.codecogs.com/svg.latex?h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x}+b)"/> -->
-![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}%2Bb\))
+<img src="http://latex.codecogs.com/svg.latex?{h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x}+b)}"/>
+<!-- ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}%2Bb\)) -->
 
 对于每个数据点和分类器（超平面）之间的距离：
 - 考虑超平面上的任意一点 x<sup>'</sup>
-- w 与超平面上任意一点的乘积为 0 ，因此 w 相当于超平面的法向量 （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}^{'}%2Bb=0)）
-<!-- （<img src="http://latex.codecogs.com/svg.latex?\mathbf{w}^T\mathbf{x'}+b=0"/>） -->
+- w 与超平面上任意一点的乘积为 0 ，因此 w 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}^{'}+b=0}"/>）
+<!-- （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}^{'}%2Bb=0)） -->
 
 - 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
-- 因为这数据点可以被分类器（超平面）区分，因此有 ![](https://render.githubusercontent.com/render/math?math=\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)\gt0)
-<!-- <img src="http://latex.codecogs.com/svg.latex?\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0"/> -->
+- 因为这数据点可以被分类器（超平面）区分，因此有  <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0}"/>
+<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)\gt0) -->
 
 所以距离可以简化为：
 
-<!-- <img src="http://latex.codecogs.com/svg.latex?\mathrm{distance}(\mathbf{x},b,\mathbf{w}))=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)"/> -->
-![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{||\mathbf{w}||}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T%2Bb|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\))
+<img src="http://latex.codecogs.com/svg.latex?{\mathrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
+
+<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{||\mathbf{w}||}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T%2Bb|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
 
 ---
 
 对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
 
-因此，我们可以对这个向量进行一个特殊的缩放，使 ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1)
+因此，我们可以对这个向量进行一个特殊的缩放，使 <img src="http://latex.codecogs.com/svg.latex?{\matop{\min_{n=1\,\!...\,\!N}}\,\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1)}"/>
+
+<!-- ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1) -->
 
 ---
 
