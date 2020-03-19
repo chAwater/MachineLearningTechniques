@@ -23,7 +23,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 《机器学习技法》更进一步的关注在 **特征转换** 的一些相关技术，让学生能够更专业的了解和使用机器学习。
 
-- 需要先学习《机器学习基石》再学习《机器学习技法》
+- 需要先学习《机器学习基石》（下简称《基石》）再学习《机器学习技法》
 
 ### 其他支持
 
@@ -37,10 +37,11 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ## Lecture 1: Linear Support Vector Machine
 
 —— 介绍边界的概念
+—— 介绍支持向量机、名字的由来和解法
 
 ### 最大边界的线性分类器
 
-先回顾一下线性分类问题：
+先回顾一下线性分类问题（参见《基石》）：
 - <img src="http://latex.codecogs.com/svg.latex?{h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x})}"/>
 <!-- - ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}\)) -->
 - PLA 算法
@@ -52,7 +53,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些噪声的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪声、误差。
 
 所以我们希望 **每个点都和我们的线距离最远**，也可以说我们希望我们能够找到一个 **最胖** 的线，这个线离它最近的点的距离最远。
-这个线有多“胖”，就是说这个线的边界有多大，称为 **边界 (margin)**。
+这个线有多“胖”，就是说这个线的`边界`( margin ) 有多大。
 
 总结一下：
 - 找到一个可以正确区分数据的线性分类器（超平面）
@@ -60,8 +61,6 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 - 最大化这个边界
 
 ![](./Snapshot/Snap02.png)
-
----
 
 ### 简化问题
 
@@ -79,7 +78,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 对于每个数据点和分类器（超平面）之间的距离：
 - 考虑超平面上的任意一点 x<sup>'</sup>
-- w 与超平面上任意一点的乘积为 0 ，因此 **w** 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}^{'}+b=0}"/>）
+- **w** 与超平面上任意一点的乘积为 0 ，因此 **w** 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}^{'}+b=0}"/>）
 <!-- （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}^{'}%2Bb=0)） -->
 
 - 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
@@ -121,8 +120,23 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ![](./Snapshot/Snap03.png)
 
+### 支持向量机
+
+这种算法被称为`支持向量机`，是因为在超平面`边界`上的那些数据点决定了这个超平面和边界，而其他地方的数据点对于边界和超平面来说是不必要的。
+这些在超平面边界上的点被称为`支持向量`（的候选），因为这些点就好像在支撑着这个超平面一样。
+
+那么我们继续来求解这个问题，这个问题有一些特性：
+- 这个问题是`凸的二次函数`
+- 这个问题是 **w** 和 b 的`线性运算`
+
+具有这种特性的问题被称为`二次规划`( quadratic programming, QP )，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。
+
+![](./Snapshot/Snap04.png)
+
+这就是硬边界（hard-margin，每个数据都是正确区分的）的线性（非线性变换后线性也可以）支持向量机的标准解法。
+
 ---
 
-### 支持向量机
+### 
 
 <!--  -->
