@@ -71,7 +71,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ---
 
-[Issues #1]
+[Issues #1] 为什么要把 b 拿出来？
 
 ---
 
@@ -88,7 +88,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 所以距离可以简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\textrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
 
 <!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{||\mathbf{w}||}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T%2Bb|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
 
@@ -97,7 +97,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
 
 因此，我们可以对这个向量进行一个 **特殊的缩放**，使：
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min_{n=1,...,N}}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 <!-- ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1) -->
 
@@ -107,7 +107,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 所以这个问题就被简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max_{b,\mathbf{w}}}\frac{1}{||\mathbf{w}||}\mathrm{\quad\,subject\,to\quad\,}\,\mathop{\min_{n=1,...,N}}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_{b,\mathbf{w}}\frac{1}{||\mathbf{w}||}\textrm{\quad\,subject\,to\quad\,}\,\mathop{\min}_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 #### 简化条件 - 有帮助的宽松
 
@@ -126,11 +126,15 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 这种算法被称为`支持向量机`(Support Vector Machine, SVM)，是因为在超平面`边界`上的那些数据点决定了这个超平面和边界，而其他地方的数据点对于边界和超平面来说是不必要的。
 这些在超平面边界上的点被称为`支持向量`（的候选），因为这些点就好像在支撑着这个超平面一样。
 
+```
+####### 感受数学的力量吧！！！ #######
+```
+
 那么我们继续来求解这个问题，这个问题有一些特性：
 - 这个问题是`凸的二次函数`
 - 这个问题是 **w** 和 b 的`线性运算`
 
-具有这种特性的问题被称为`二次规划`( Quadratic Programming, QP )，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。
+具有这种特性的问题被称为`二次规划`( Quadratic Programming, QP )，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。（作为“文科生”，这段转化忽略...）
 
 ![](./Snapshot/Snap04.png)
 
@@ -163,5 +167,45 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ---
 ---
 
+## Lecture 2: Dual Support Vector Machine
+
+—— 介绍 SVM 的对偶问题
+—— 介绍拉格朗日函数
+
+### 回顾 SVM 和对偶问题（对偶 SVM）
+
+在上面我们介绍了 SVM 的标准解法（转化成`二次规划`问题），并且我们可以利用`特征转换`把 **x** 转换到 **z** 空间中，这样在`VC`上我们就可以做到有很高的复杂度，但又因为`边界`限制而没有那么多的复杂度。
+
+但是还有一个问题，因为 QP 有 <i>d</i>+1 个变量，当我们使用的`特征转换`很强大的时候，转换后的 <i>d</i> 就会很大，因此这个`二次规划`问题也很难解。我们希望解 SVM 的过程能够和  <i>d</i> 没关系，比如夸张点 <i>d</i> 无穷大也能解。
+
+那么下面我们就来将原来的 SVM 求解中的有 <i>d</i>+1 个变量和 N 个条件 的 QP，转换成它的 **对偶问题**，这新的问题只有 N 个变量和 N+1 个条件。这里将有很多很多的数学（之前的还不算多...），我们会只介绍概念和重点。
+
+我们用到了一个很重要的工具就是 **拉格朗日乘数 Lagrange Multiplier**，常用于解决有条件的最佳化问题。在《基石》，我们在做`正则化`的时候有用到，将正则化的条件放进最小化的问题中。
+
+不一样的地方是，在正则化的时候，&lambda; 是限制条件常数 C 的一种代替，因此也是常数。
+
+而在 SVM 中，我们把 &lambda; 当做一个变量来代替原本 SVM 的变量来解，这就是对偶问题。因为 SVM 有 N 个条件，所以就有 N 个 &lambda;。
+
+---
+
+[Issues #2] 什么是对偶问题？
+
+---
+
+原来的 SVM 问题：
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\mathrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\mathrm{for}\,n=1,...,N}"/>
+
+我们构建一个 **拉格朗日函数** （其中的 a<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
+<img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})=\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}}_{\textrm{objective}}\;+\;\sum_{n=1}^N\alpha_n\underbrace{(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))}_{\textrm{constraint}}}"/>
+
+这样一来有：<img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
+
+这是因为：
+- &alpha; 大于 0
+- 当条件不满足时，`条件项`大于 0，最大化拉格朗日函数会得到无穷大
+- 当条件满足时，`条件项`小于等于 0，最大化拉格朗日函数等于`目标项`
+- 对`目标项`最小化就等同于原来的 SVM 问题
+
+### 拉格朗日对偶 SVM
 
 <!--  -->
