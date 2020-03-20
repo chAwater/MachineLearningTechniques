@@ -99,7 +99,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
 
 因此，我们可以对这个向量进行一个 **特殊的缩放**，使：
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 <!-- ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1) -->
 
@@ -109,7 +109,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 所以这个问题就被简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_{b,\mathbf{w}}\frac{1}{||\mathbf{w}||}\textrm{\quad\,subject\,to\quad\,}\,\mathop{\min}_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_{b,\mathbf{w}}\frac{1}{||\mathbf{w}||}\textrm{\quad\,subject\,to\quad\,}\,\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 #### 简化条件 - 有帮助的宽松
 
@@ -197,7 +197,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 原来的 SVM 问题：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\mathrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\mathrm{for}\,n=1,...,N}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\textrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,...,N}"/>
 
 我们构建一个 **拉格朗日函数** （其中的 a<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
 
@@ -205,7 +205,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 这样一来有：
 
-<img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
 
 这是因为：
 - 限制 &alpha; 大于 0
@@ -217,11 +217,11 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 在 SVM 的对偶问题中，对于某一个特定的 &alpha;<sup>'</sup>，拉格朗日函数的值必定小于等于最大的那一个：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\mathop{\min}_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}^{'})}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}^{'})}"/>
 
 对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（`拉格朗日对偶问题`）：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\,\ge\,\underbrace{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\mathop{\min}_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}_{\textrm{Lagrange\;dual\;problem}}}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\,\ge\,\underbrace{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}_{\textrm{Lagrange\;dual\;problem}}}"/>
 
 这个拉格朗日对偶问题是 SVM 问题的下限（小于等于），下限是一个弱对偶关系。如果等号成立的话（强对偶关系），我们就可以用右边的问题代替原来的 SVM，这样的好处是右边对 b 和 **w** 的最小化是没有条件的，很好解。
 
@@ -231,7 +231,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 下面来求解（化简）`拉格朗日对偶问题`：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\mathop{\min}_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
 
 因为`拉格朗日函数`的最小化没有条件，所以只要求导（偏微分导数）就可以了，拉格朗日函数是 b 、 **w** 和 &alpha; 的函数，我们先对 b 求偏微分：
 
@@ -239,7 +239,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 既然最佳解满足这个偏微分导数为 0 的条件，我们可以把这个条件加进拉格朗日对偶问题中：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0}\left(\mathop{\min}_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n)}\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n)}\right)}"/>
 
 同时，因为 b 的系数为 0 因此 b 被去掉了。但是 b 在我们做预测的时候是有用的（需要计算），没关系，后面有办法再把 b 算出来。
 
@@ -253,10 +253,40 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 继续带入：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n||^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n||^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
 
-现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（ KKT 条件）：
+现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（ **KKT 条件**）：
 
 ![](./Snapshot/Snap06.png)
+
+### 求解对偶 SVM
+
+现在 SVM 问题被转化成了只和 &alpha; 相关的最佳化问题，我们再来做一些简化。首先我们通过`取负`把最大化问题转化成最小化问题：（因为我们现在只讨论 &alpha; 所以和 **w** 相关的条件可以不用处理）
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\alpha}}\frac{1}{2}\sum^{N}_{n=1}\sum^{N}_{m=1}\alpha_n\alpha_m\mathrm{y}_n\mathrm{y}_m\mathbf{z}_n^T\mathbf{z}_m-\sum^{N}_{n=1}\alpha_n\textrm{\,\,s.\,t.\,\,}\sum_{n=1}^{N}\alpha_n\mathrm{y}_n=0;\;\alpha_n\,\ge\,0,\textrm{for}\,n=1,...,N}"/>
+
+这个最小化问题有 N 个变量（&alpha;）和 N+1 个条件！并且这个问题也是一个凸的二次规划问题！下面只要把这个问题转化成标准二次规划问题的形式就好了！
+
+![](./Snapshot/Snap07.png)
+
+但是转化后的二次规划问题也不好解，因为这里有个巨大的非零矩阵 Q ，而且这个 Q 还需要先算出来，再放到求解二次规划的工具中，通常需要花费太长的计算时间。实际上，通常有特别为 SVM 求解的二次规划工具，专门针对求解 SVM 做了优化。
+
+---
+
+当我们得到了 &alpha; 之后，我们需要用 KKT 条件来算出 b 和 **w**：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}=\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n}"/>
+
+对于 b ，如果 &alpha;<sub>n</sub> > 0 ，则可利用拉格朗日函数中的条件项也可以算出：
+
+<img src="http://latex.codecogs.com/svg.latex?{\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))=0\;\Rightarrow\;b=\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n;"/>
+
+这些 &alpha;<sub>n</sub> > 0 的那些数据点就是在边界上的`支持向量`。
+
+在边界上的那些点是`支持向量`的候选，而那些 &alpha;<sub>n</sub> > 0 的点才是真的`支持向量`。
+
+### SVM 其他的信息
+
+
 
 <!--  -->
