@@ -253,12 +253,10 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 继续带入：
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}{n=1}||\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n||^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
 
-<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_\mathbf{w}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
+现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（ KKT 条件）：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
-
-<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{w}}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
+![](./Snapshot/Snap06.png)
 
 <!--  -->
