@@ -37,7 +37,9 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ## Lecture 1: Linear Support Vector Machine
 
 —— 介绍边界的概念
+
 —— 介绍支持向量机、名字的由来
+
 —— 介绍支持向量机的一般解法和理论保证
 
 ### 最大边界的线性分类器
@@ -170,6 +172,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ## Lecture 2: Dual Support Vector Machine
 
 —— 介绍 SVM 的对偶问题
+
 —— 介绍拉格朗日函数
 
 ### 回顾 SVM 和对偶问题（对偶 SVM）
@@ -193,19 +196,69 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ---
 
 原来的 SVM 问题：
+
 <img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\mathrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\mathrm{for}\,n=1,...,N}"/>
 
 我们构建一个 **拉格朗日函数** （其中的 a<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
+
 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})=\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}}_{\textrm{objective}}\;+\;\sum_{n=1}^N\alpha_n\underbrace{(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))}_{\textrm{constraint}}}"/>
 
-这样一来有：<img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
+这样一来有：
+
+<img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
 
 这是因为：
-- &alpha; 大于 0
+- 限制 &alpha; 大于 0
 - 当条件不满足时，`条件项`大于 0，最大化拉格朗日函数会得到无穷大
 - 当条件满足时，`条件项`小于等于 0，最大化拉格朗日函数等于`目标项`
 - 对`目标项`最小化就等同于原来的 SVM 问题
 
 ### 拉格朗日对偶 SVM
+
+在 SVM 的对偶问题中，对于某一个特定的 &alpha;<sup>'</sup>，拉格朗日函数的值必定小于等于最大的那一个：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\mathop{\min}_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}^{'})}"/>
+
+对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（`拉格朗日对偶问题`）：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_{b,\mathbf{w}}\left(\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\,\ge\,\underbrace{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\mathop{\min}_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}_{\textrm{Lagrange\;dual\;problem}}}"/>
+
+这个拉格朗日对偶问题是 SVM 问题的下限（小于等于），下限是一个弱对偶关系。如果等号成立的话（强对偶关系），我们就可以用右边的问题代替原来的 SVM，这样的好处是右边对 b 和 **w** 的最小化是没有条件的，很好解。
+
+如果这个问题是凸的、有解（线性可分）并且只有线性的限制条件，这个`强对偶关系`就成立，SVM 符合这些条件，等号成立（这里“文科生”了）。
+
+---
+
+下面来求解（化简）`拉格朗日对偶问题`：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\mathop{\min}_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
+
+因为`拉格朗日函数`的最小化没有条件，所以只要求导（偏微分导数）就可以了，拉格朗日函数是 b 、 **w** 和 &alpha; 的函数，我们先对 b 求偏微分：
+
+<img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}{\partial{b}}=-\sum^{N}_{n=1}\alpha_n\mathrm{y}_n=0}"/>
+
+既然最佳解满足这个偏微分导数为 0 的条件，我们可以把这个条件加进拉格朗日对偶问题中：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0}\left(\mathop{\min}_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n)}\right)}"/>
+
+同时，因为 b 的系数为 0 因此 b 被去掉了。但是 b 在我们做预测的时候是有用的（需要计算），没关系，后面有办法再把 b 算出来。
+
+那么我们继续对 **w** 求偏微分：
+
+<img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}{\partial\mathrm{w}_{i}}=\mathrm{w}_{i}-\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathrm{z}_{n,i}=0}"/>
+
+向量化表示：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}=\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n}"/>
+
+继续带入：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\max}_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}{n=1}||\right)}"/>
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathop{\min}_\mathbf{w}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{w}}\,E_{\textrm{in}}(\mathbf{w})=\frac{1}{N}\,||\mathbf{X}\mathbf{w}-\mathrm{y}||^2}"/>
 
 <!--  -->
