@@ -90,9 +90,9 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 所以距离可以简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\textrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{||\mathbf{w}||}(\mathbf{x}-\mathbf{x}')|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T+b|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\textrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}(\mathbf{x}-\mathbf{x}')|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T+b|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
 
-<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{||\mathbf{w}||}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{||\mathbf{w}||}|\mathbf{w}^T%2Bb|=\frac{1}{||\mathbf{w}||}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
+<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T%2Bb|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
 
 #### 简化条件 - 向量缩放和边界的定义
 
@@ -105,11 +105,11 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 这样操作之后有两个好处：
 1. 显然在这种缩放下可以保证 <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0}"/>，因此这个条件可以去掉；
-2. 边界变成 <img src="http://latex.codecogs.com/svg.latex?{\frac{1}{||\mathbf{w}||}}"/>
+2. 边界变成 <img src="http://latex.codecogs.com/svg.latex?{\frac{1}{\|\mathbf{w}\|}}"/>
 
 所以这个问题就被简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\max_{b,\mathbf{w}}\frac{1}{||\mathbf{w}||}\textrm{\quad\,subject\,to\quad\,}\,\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_{b,\mathbf{w}}\frac{1}{\|\mathbf{w}\|}\textrm{\quad\,subject\,to\quad\,}\,\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 #### 简化条件 - 有帮助的宽松
 
@@ -253,7 +253,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 继续带入：
 
-<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}||\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n||^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}\|\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n\|^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
 
 现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（ **KKT 条件**）：
 
@@ -308,5 +308,13 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ---
 ---
 ---
+
+## Lecture 3: Kernel Support Vector Machine
+
+在我们利用对偶问题和二次规划求解 SVM 的时候，还剩下一个问题就是 Q 矩阵的计算是依赖于 <i>d</i> 的：
+
+<img src="http://latex.codecogs.com/svg.latex?{q_{n,m}=\mathrm{y}_n\mathrm{y}_m\mathbf{z}^T_n\mathbf{z}_m;\;\mathbf{z}^T_n\mathbf{z}_m\in\mathbb{R}^{\tilde{d}}\,-\,O(\tilde{d})}"/>
+
+
 
 <!--  -->
