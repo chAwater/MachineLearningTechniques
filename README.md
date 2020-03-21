@@ -269,7 +269,11 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ![](./Snapshot/Snap07.png)
 
-但是转化后的二次规划问题也不好解，因为这里有个巨大的非零矩阵 Q ，而且这个 Q 还需要先算出来，再放到求解二次规划的工具中，通常需要花费太长的计算时间。实际上，通常有特别为 SVM 求解的二次规划工具，专门针对求解 SVM 做了优化。
+但是转化后的二次规划问题也不好解，因为这里有个巨大的非零矩阵 Q ，而且这个 Q 还需要先算出来，再放到求解二次规划的工具中，通常需要花费太长的计算时间。
+
+同时，其实我们也没有真正的摆脱 <i>d</i>，因为当 <i>d</i> 很大的时候，计算 Q 仍然和 <i>d</i> 是有关的，这个我们在下一讲来处理。
+
+实际上，通常有特别为 SVM 求解的二次规划工具，专门针对求解 SVM 做了优化，加速计算 Q 矩阵的过程。
 
 ---
 
@@ -287,6 +291,22 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### SVM 其他的信息
 
+既然那些 &alpha;<sub>n</sub> > 0 的点才是真的`支持向量`，那么在计算 **w** 的时候，只需要计算支持向量的那些项：
 
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}=\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n=\sum_\textrm{SV}\alpha_n\mathrm{y}_n\mathbf{z}_n}"/>
+
+而 b 则可以用任意一个支持向量计算出来。
+
+这和之前我们讲 SVM 的几何意义是相似的，只有支持向量有用，而其他的数据没有用。因此 SVM 也可以看成是一个找出支持向量的机制！
+
+类似的，PLA 则是用“犯错误”的数据计算 **w** 算法：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}_{\textrm{SVM}}=\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n\;\;\;\mathbf{w}_{\textrm{PLA}}=\sum_{n=1}^N\beta_n\mathrm{y}_n\mathbf{z}_n}"/>
+
+这就很有意思了，这些算法都是数据的`线性组合`，也就说 **w** 可以用数据`表现` (represent) 出来。
+
+---
+---
+---
 
 <!--  -->
