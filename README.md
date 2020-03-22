@@ -311,6 +311,12 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ## Lecture 3: Kernel Support Vector Machine
 
+—— 介绍核函数的概念
+
+—— 介绍不同的核函数和其作用
+
+### 核函数
+
 在我们利用对偶问题和二次规划求解 SVM 的时候，还剩下一个问题就是 Q 矩阵的计算是依赖于 <i>d</i> 的：
 
 <img src="http://latex.codecogs.com/svg.latex?{q_{n,m}=\mathrm{y}_n\mathrm{y}_m\mathbf{z}^T_n\mathbf{z}_m;\quad\mathbf{z}^T_n\mathbf{z}_m=\boldsymbol{\Phi}(\mathbf{x}_n)^T\boldsymbol{\Phi}(\mathbf{x}_m)\in\mathbb{R}^{\tilde{d}}\,-\,O(\tilde{d})}"/>
@@ -338,6 +344,33 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 <img src="http://latex.codecogs.com/svg.latex?{g_\textrm{svm}(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\boldsymbol{\Phi}(\mathbf{x})+b)=\mathrm{sign}\left(\sum_{n=1}^N\alpha_n\mathrm{y}_{n}K(\mathbf{x}_n,\mathbf{x})+b\right)}"/>
 
 通过`核函数`，我们其实没有任何一次是在特征转换后的 **z** 空间做运算，这样我们也就真正意义上的摆脱了特征转换的复杂度 <i>d</i> ，只需要 **x** 就可以！这就是 **Kernel SVM** ！
+
+---
+
+### 多项式核函数
+
+刚才我们看了一下二项式转换和相对应的核函数，如果我们对二次项做一个缩放，一次项再做一个根号二倍的缩放，就可以得到一个简单的、一般形式的 **二项式核函数** 的表现形式。
+
+<img src="http://latex.codecogs.com/svg.latex?{K_2(\mathbf{x},\mathbf{x}^{'})=(1+\gamma\mathbf{x}^T\mathbf{x}^{'})^2\;\textrm{with}\;\gamma>0}"/>
+
+这个一般形式的核函数和原本的二项式核函数有什么区别呢？
+
+它们对应到同一个二次空间，因为都是二次的特征转换；但是因为系数不同，尤其是在 **x** 的`內积`
+上，在`几何`上定义了不同的`距离`，因此会得到不同的`边界`：
+
+![](./Snapshot/Snap09.png)
+
+把二项式核函数进一步扩展下去，就可以得到 **多项式核函数** 的一般形式：
+
+<img src="http://latex.codecogs.com/svg.latex?{K_Q(\mathbf{x},\mathbf{x}^{'})=(\zeta+\gamma\mathbf{x}^T\mathbf{x}^{'})^Q\;\textrm{with}\;\gamma>0,\zeta\,\ge\,0}"/>
+
+利用核函数，我们可以很方便的使用很高次的特征转换而不用花费太多的计算；同时利用边界，可以控制函数的复杂度，帮助我们不会过拟合。
+
+当然，还有最简单的 **线性核函数** （略）。
+
+### 高斯核函数
+
+既然我们可以用核函数摆脱特征转换 <i>d</i> 的限制，也节省了很多计算，那么我们是不是可以疯狂的把特征转换扩展，甚至扩展到 **无限多** 的维度上？
 
 
 <!--  -->
