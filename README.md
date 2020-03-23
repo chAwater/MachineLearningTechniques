@@ -81,8 +81,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 对于每个数据点和分类器（超平面）之间的距离：
 - 考虑超平面上的任意一点 x<sup>'</sup>
-- **w** 与超平面上任意一点的乘积为 0 ，因此 **w** 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}^{'}+b=0}"/>）
-<!-- （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}^{'}%2Bb=0)） -->
+- **w** 与超平面上任意一点的乘积为 0 ，因此 **w** 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}'+b=0}"/>）
+<!-- （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}'%2Bb=0)） -->
 
 - 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
 - 因为这数据点可以被分类器（超平面）区分，因此有 <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0}"/>
@@ -92,7 +92,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\textrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}(\mathbf{x}-\mathbf{x}')|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T+b|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
 
-<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}\(\mathbf{x}-\mathbf{x}^{'}\)\right|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T%2Bb|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
+<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}\(\mathbf{x}-\mathbf{x}'\)\right|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T%2Bb|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
 
 #### 简化条件 - 向量缩放和边界的定义
 
@@ -217,7 +217,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 在 SVM 的对偶问题中，对于某一个特定的 &alpha;<sup>'</sup>，拉格朗日函数的值必定小于等于最大的那一个：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}^{'})}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}')}"/>
 
 对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（**拉格朗日对偶问题**）：
 
@@ -351,7 +351,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 刚才我们看了一下二项式转换和相对应的核函数，如果我们对二次项做一个缩放，一次项再做一个根号二倍的缩放，就可以得到一个简单的、一般形式的 **二项式核函数** 的表现形式。
 
-<img src="http://latex.codecogs.com/svg.latex?{K_2(\mathbf{x},\mathbf{x}^{'})=(1+\gamma\mathbf{x}^T\mathbf{x}^{'})^2\;\textrm{with}\;\gamma>0}"/>
+<img src="http://latex.codecogs.com/svg.latex?{K_2(\mathbf{x},\mathbf{x}')=(1+\gamma\mathbf{x}^T\mathbf{x}')^2\;\textrm{with}\;\gamma>0}"/>
 
 这个一般形式的核函数和原本的二项式核函数有什么区别呢？
 
@@ -362,7 +362,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 把二项式核函数进一步扩展下去，就可以得到 **多项式核函数** 的一般形式：
 
-<img src="http://latex.codecogs.com/svg.latex?{K_Q(\mathbf{x},\mathbf{x}^{'})=(\zeta+\gamma\mathbf{x}^T\mathbf{x}^{'})^Q\;\textrm{with}\;\gamma>0,\zeta\,\ge\,0}"/>
+<img src="http://latex.codecogs.com/svg.latex?{K_Q(\mathbf{x},\mathbf{x}')=(\zeta+\gamma\mathbf{x}^T\mathbf{x}')^Q\;\textrm{with}\;\gamma>0,\zeta\,\ge\,0}"/>
 
 利用核函数，我们可以很方便的使用很高次的特征转换而不用花费太多的计算；同时利用边界，可以控制函数的复杂度，帮助我们不会过拟合。
 
@@ -371,6 +371,12 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ### 高斯核函数
 
 既然我们可以用核函数摆脱特征转换 <i>d</i> 的限制，也节省了很多计算，那么我们是不是可以疯狂的把特征转换扩展，甚至扩展到 **无限多** 的维度上？
+
+为了简化这个问题，我们现在假设输入 **x** 只有一维。然后我们构建一个简单的高斯函数，并来证明这个高斯函数相当于是在无限多维上的特征转换！
+
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}K(\mathrm{x},\mathrm{x}')&\quad=\quad\exp(-(\mathrm{x}-\mathrm{x}')^2)\\&\quad=\quad\exp(-(\mathrm{x})^2)\exp(-(\mathrm{x}')^2)\exp(2\mathrm{x}\mathrm{x}')\\&\;\,\overset{\textrm{Taylor}}{=}\,\;\exp(-(\mathrm{x})^2)\exp(-(\mathrm{x}')^2)\left(\sum_{i=0}^{\infty}\frac{(2\mathrm{x}\mathrm{x}')^i}{i!}\right)\\&\quad=\quad\sum_{i=0}^{\infty}\left(\sqrt{\frac{2^i}{i!}}\exp(-(\mathrm{x})^2)(\mathrm{x})^i\sqrt{\frac{2^i}{i!}}\exp(-(\mathrm{x}')^2)(\mathrm{x}')^i\right)\\&\quad=\quad\boldsymbol{\Phi}(\mathrm{x})^T\boldsymbol{\Phi}(\mathrm{x}')\end{align*}}"/>
+
 
 
 <!--  -->
