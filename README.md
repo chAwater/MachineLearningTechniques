@@ -99,7 +99,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 对于表示这个分类器（超平面）的向量来说，向量的缩放（改变长度不改变方向）并不影响，仍然可以表示这个超平面。
 
 因此，我们可以对这个向量进行一个 **特殊的缩放**，使：
-<img src="http://latex.codecogs.com/svg.latex?{\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{n=1,\dots,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 <!-- ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1) -->
 
@@ -109,7 +109,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 所以这个问题就被简化为：
 
-<img src="http://latex.codecogs.com/svg.latex?{\max_{b,\mathbf{w}}\frac{1}{\|\mathbf{w}\|}\textrm{\quad\,subject\,to\quad\,}\,\min_{n=1,...,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\max_{b,\mathbf{w}}\frac{1}{\|\mathbf{w}\|}\textrm{\quad\,subject\,to\quad\,}\,\min_{n=1,\dots,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
 #### 简化条件 - 有帮助的宽松
 
@@ -197,7 +197,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 原来的 SVM 问题：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\textrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,...,N}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\textrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,\dots,N}"/>
 
 我们构建一个 **拉格朗日函数** （其中的 a<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
 
@@ -263,7 +263,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 现在 SVM 问题被转化成了只和 &alpha; 相关的最佳化问题，我们再来做一些简化。首先我们通过取负把最大化问题转化成最小化问题：（因为我们现在只讨论 &alpha; 所以和 **w** 相关的条件可以不用处理）
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\alpha}}\frac{1}{2}\sum^{N}_{n=1}\sum^{N}_{m=1}\alpha_n\alpha_m\mathrm{y}_n\mathrm{y}_m\mathbf{z}_n^T\mathbf{z}_m-\sum^{N}_{n=1}\alpha_n\textrm{\,\,s.\,t.\,\,}\sum_{n=1}^{N}\alpha_n\mathrm{y}_n=0;\;\alpha_n\,\ge\,0,\textrm{for}\,n=1,...,N}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\alpha}}\frac{1}{2}\sum^{N}_{n=1}\sum^{N}_{m=1}\alpha_n\alpha_m\mathrm{y}_n\mathrm{y}_m\mathbf{z}_n^T\mathbf{z}_m-\sum^{N}_{n=1}\alpha_n\textrm{\,\,s.\,t.\,\,}\sum_{n=1}^{N}\alpha_n\mathrm{y}_n=0;\;\alpha_n\,\ge\,0,\textrm{for}\,n=1,\dots,N}"/>
 
 这个最小化问题有 N 个变量（&alpha;）和 N+1 个条件！并且这个问题也是一个凸的二次规划问题！下面只要把这个问题转化成标准二次规划问题的形式就好了！
 
@@ -374,8 +374,28 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 为了简化这个问题，我们现在假设输入 **x** 只有一维。然后我们构建一个简单的高斯函数，并来证明这个高斯函数相当于是在无限多维上的特征转换！
 
-
 <img src="http://latex.codecogs.com/svg.latex?{\begin{align*}K(\mathrm{x},\mathrm{x}')&\quad=\quad\exp(-(\mathrm{x}-\mathrm{x}')^2)\\&\quad=\quad\exp(-(\mathrm{x})^2)\exp(-(\mathrm{x}')^2)\exp(2\mathrm{x}\mathrm{x}')\\&\;\,\overset{\textrm{Taylor}}{=}\,\;\exp(-(\mathrm{x})^2)\exp(-(\mathrm{x}')^2)\left(\sum_{i=0}^{\infty}\frac{(2\mathrm{x}\mathrm{x}')^i}{i!}\right)\\&\quad=\quad\sum_{i=0}^{\infty}\left(\sqrt{\frac{2^i}{i!}}\exp(-(\mathrm{x})^2)(\mathrm{x})^i\sqrt{\frac{2^i}{i!}}\exp(-(\mathrm{x}')^2)(\mathrm{x}')^i\right)\\&\quad=\quad\boldsymbol{\Phi}(\mathrm{x})^T\boldsymbol{\Phi}(\mathrm{x}')\end{align*}}"/>
+
+这里的：
+
+<img src="http://latex.codecogs.com/svg.latex?{\boldsymbol{\Phi}(\mathrm{x})=\exp(-\mathrm{x}^2)\cdot\,\left(1,\sqrt{\frac{2}{1!}}\mathrm{x},\sqrt{\frac{2^2}{2!}}\mathrm{x}^2,\dots\right)}"/>
+
+通过泰勒展开，高斯函数里可以藏着一个无限多维特征转换的核函数 **高斯核函数**！是不是很神奇！
+
+更一般化一点的：
+
+<img src="http://latex.codecogs.com/svg.latex?{K(\mathbf{x},\mathbf{x}')=\exp(-\gamma\|\mathbf{x}-\mathbf{x}')\|^2)\;\textrm{with}\;\gamma>0}"/>
+
+当我们预测的时候：
+
+<img src="http://latex.codecogs.com/svg.latex?{g_\textrm{svm}(\mathbf{x})=\mathrm{sign}\left(\sum_{\texnrm{SV}}\alpha_n\mathrm{y}_{n}\exp(-\gamma\|\mathbf{x}-\mathbf{x}_n)\|^2)+b\right)}"/>
+
+这相当于是很多以`支持向量`为中心的`高斯函数`进行`线性组合`，因此这个核函数又叫 **径向基核函数 (Radial Basis Function, RBF)**。
+
+不过，尽管 SVM 有`核函数`帮助我们省掉了很多计算复杂度，有`边界`帮助我们控制复杂度，但在这个强大的`特征转换`下，仍然有可能会`overfit`！所以一定要慎重选择参数。
+
+![](./Snapshot/Snap10.png)
+
 
 
 
