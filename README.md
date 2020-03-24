@@ -53,7 +53,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ![](./Snapshot/Snap01.png)
 
-但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些噪声的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪声、误差。
+但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些噪音的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪音、误差。
 
 所以我们希望 **每个点都和我们的线距离最远**，也可以说我们希望我们能够找到一个 **最胖** 的线，这个线离它最近的点的距离最远。
 这个线有多“胖”，就是说这个线的 **边界 (margin)** 有多大。
@@ -392,7 +392,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 这相当于是很多以`支持向量`为中心的`高斯函数`进行`线性组合`，因此这个核函数又叫 **径向基核函数 (Radial Basis Function, RBF)**。
 
-不过，尽管 SVM 有`核函数`帮助我们省掉了很多计算复杂度，有`边界`帮助我们控制复杂度，但在这个强大的`特征转换`下，仍然有可能会`overfit`！所以一定要慎重选择参数。
+不过，尽管 SVM 有`核函数`帮助我们省掉了很多计算复杂度，有`边界`帮助我们控制复杂度，但在这个强大的`特征转换`下，仍然有可能会`过拟合`！所以一定要慎重选择参数。
 
 ![](./Snapshot/Snap10.png)
 
@@ -419,5 +419,31 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ---
 ---
 ---
+
+## Lecture 4: Soft-Margin Support Vector Machine
+
+—— 介绍软边界的支持向量机（也就是一般所说的SVM）
+
+### 软边界的意义
+
+上面我们介绍了硬边界的 SVM，它要求数据必须是完全正确区分的。然而实际上这个条件会引发很多问题，比如数据有噪音，追求完全正确区分不一定有意义；而且能够完全正确区分意味着可以`Shatter`，复杂度会偏高；这些在实际应用中反而会容易造成过拟合。
+
+因此，实际应用中我们应该能够容忍一些噪音。在《基石》中，我们讲过一个`口袋算法`，使分类器在数据集中出现的错误最少，我们也可以把它运用在 SVM 上：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\infty\cdot[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\end{align*}}"/>
+
+这里 的 C 是可以用来调节（权衡）`边界`和`噪音容忍程度`的参数。
+
+但是这样一来这个问题就不是一个 QP 问题了，因此之前我们做的所有努力就都不能用了。除此以外，小和大的错误没有区分，显然这也是不好的。
+
+因此我们提出一个新的参数：“边界违背程度”，用这个参数来代替错误的个数来表示错误，这样就可以保证我们仍然是一个 QP 问题，这就是软边界的 SVM：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
+
+这是一个有 <i>d</i>+1+N 个变量和 2N 个条件 的 QP，我们接下来就可以用和前面硬边界 SVM 类似的方法来解决它。
+
+### 对偶问题
+
+
 
 <!--  -->
