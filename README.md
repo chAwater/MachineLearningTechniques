@@ -438,12 +438,30 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 因此我们提出一个新的参数：“边界违背程度”，用这个参数来代替错误的个数来表示错误，这样就可以保证我们仍然是一个 QP 问题，这就是软边界的 SVM：
 
-<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
 
 这是一个有 <i>d</i>+1+N 个变量和 2N 个条件 的 QP，我们接下来就可以用和前面硬边界 SVM 类似的方法来解决它。
 
 ### 对偶问题
 
+既然现在我们得到的问题和，硬边界 SVM 是类似的 QP 问题，那么解决的方法也是类似的，我们还是先构建一个拉格朗日函数来化解这个问题：
 
+<img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\xi},\boldsymbol{\alpha},\boldsymbol{\beta})={\frac{1}{2}\mathbf{w}^T\mathbf{w}}+C\cdot\sum_{n=1}^{N}\xi_n\;+\;\sum_{n=1}^N\alpha_n\cdot(1-\xi_n-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))+\sum_{n=1}^N\beta_n\cdot(-\xi_n)}"/>
+
+拉格朗日对偶问题：
+
+<img src="http://latex.codecogs.com/svg.latex?{\max_{\alpha_n\,\ge\,0,\beta_n\,\ge\,0}\left(\min_{b,\mathbf{w},\boldsymbol{\xi}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\xi},\boldsymbol{\alpha},\boldsymbol{\beta})\right)}"/>
+
+求导：
+
+<img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}}{\partial{\xi_n}}=C-\alpha_n-\beta_n=0}"/>
+
+这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 &xi;<sub>n</sub>（和之前消掉 b 类似），于是得到：
+
+<img src="http://latex.codecogs.com/svg.latex?{\max_{0\,\le\,\alpha_n\,\le\,C}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}\right)}"/>
+
+除了 &alpha;<sub>n</sub> 多了一个上限是 C 的条件以外，其他和之前的 SVM 一样！因此之前的所有努力都可以继续用到这个新的 SVM 上来。
+
+### 其他的信息
 
 <!--  -->
