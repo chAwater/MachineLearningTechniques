@@ -464,4 +464,21 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 其他的信息
 
+软边界 SVM 和硬边界 SVM 只有一点点区别 （上限是 C），利用 KKT 条件计算的时候有一点区别：
+
+![](./Snapshot/Snap11.png)
+
+这种在上限 C 以下的支持向量（SV）叫做 free SV。这样一来软边界的 SVM 把数据分成了三类：
+1. non-SV (&alpha; = 0, &xi;<sub>n</sub> = 0)，距离边界很远的点，对找到超平面没有影响；
+2. free-SV (0 < &alpha;<sub>n</sub> < C, &xi;<sub>n</sub> = 0)，在边界上的点；
+3. 边界内的点 (&alpha;<sub>n</sub> = C, &xi;<sub>n</sub> = 边界违背程度)；
+
+利用这个数据分类，可以帮助我们分析数据，到底哪些是有问题的分类，哪些是噪音等。
+
+不过需要注意的是，当 C 越大，软边界的 SVM 和硬边界的 SVM 就越像（边界上的容忍很低），因此也是有可能过拟合的！
+
+### 模型选择
+
+
+
 <!--  -->
