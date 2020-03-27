@@ -479,6 +479,20 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 模型选择
 
+最常用的 SVM 模型是软边界、高斯核函数的 SVM，因此有很多参数需要选择。最好用的方法就是利用`Cross Validation（CV，交叉验证）`（参见《基石》）。
+
+在 SVM 上有一个有意思的结论：对于 Leave-One-Out CV ，有 <i>E</i><sub>loocv</sub> &le; #SV / N。
+
+这是因为在 Leave-One-Out 的时候，如果数据是 non-SV，那么模型不受到影响，并且 error = 0 ；如果数据是 SV，那么 error &le; 1。这也是 non-SV 对模型没有任何影响的一种表示。
+
+因此我们也可以用 SV 的个数来做模型选择，不过需要注意的是，SV 的个数只是上限，不代表是最优的，通常只是用来排除那些不好的模型。
+
+---
+---
+---
+
+## Lecture 5: Kernel Logistic Regression
+
 
 
 <!--  -->
