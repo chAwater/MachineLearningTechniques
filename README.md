@@ -495,4 +495,15 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 
 
+### 软边界 SVM 是一种正则化
+
+对于软边界的 SVM，我们可以把边界违背程度的条件带入公式：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\max(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b),0)}"/>
+
+这个公式就有点儿像我们在做正则化的时候的操作，但是我们没有这么继续解下去是因为这不是 QP 问题，不能使用核函数，而且 max 不能微分不好解。这样看来 SVM 和正则化的关系更近了，那么我们能不能把 SVM 延伸到其他的问题上？
+
+### SVM 回归算法
+
+
 <!--  -->
