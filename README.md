@@ -505,5 +505,16 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### SVM 回归算法
 
+这种形式的软边界的 SVM 后面一项可以看做一种`错误的衡量`，和 0/1 error 相比，SVM error （又叫 hinge error）是它的上限。
+类似的，逻辑回归的 cross-entropy error 也是 0/1 error 的上限。其实这两个 error 是很相似的，因此 SVM 也可以看成是 L2 正则化的逻辑回归。
+
+- err<sub>0/1</sub> = [[ys &le; 0]]
+- err<sub>SVM</sub> = max(1-ys,0)
+- err<sub>SCE</sub> = log<sub>2</sub>(1+exp(-ys))
+
+那么到底能否把 SVM 当做是逻辑回归？或者帮助解决逻辑回归呢？
+
+### SVM 二分类
+
 
 <!--  -->
