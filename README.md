@@ -126,7 +126,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ### 支持向量机
 
 这种算法被称为 **支持向量机 (Support Vector Machine, SVM)**，是因为在超平面`边界`上的那些数据点决定了这个超平面和边界，而其他地方的数据点对于边界和超平面来说是不必要的。
-这些在超平面边界上的点被称为`支持向量`（的候选），因为这些点就好像在支撑着这个超平面一样。
+这些在超平面边界上的点被称为 **支持向量**（的候选），因为这些点就好像在支撑着这个超平面一样。
 
 ```
 ####### 感受数学的力量吧！！！ #######
@@ -287,7 +287,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 这些 &alpha;<sub>n</sub> > 0 的那些数据点就是在边界上的`支持向量`。
 
-在边界上的那些点是`支持向量`的候选，而那些 &alpha;<sub>n</sub> > 0 的点才是真的`支持向量`。
+在边界上的那些点是`支持向量的候选`，而那些 &alpha;<sub>n</sub> > 0 的点才是真的 **支持向量**。
 
 ### SVM 其他的信息
 
@@ -514,7 +514,22 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 那么到底能否把 SVM 当做是逻辑回归？或者帮助解决逻辑回归呢？
 
-### SVM 二分类
+### SVM soft 二分类
+
+使用 SVM 帮助解决逻辑回归有几种思路：
+1. 直接使用 SVM 作为逻辑回归的近似解（直接加 <i>&theta;</i>），但是这样无法享受逻辑回归的好处；
+2. 用 SVM 的解作为起始点，再做逻辑回归，但这样麻烦/没必要，不如直接逻辑回归，相当于没有享受 SVM 的好处；
+
+因此，为了融合 SVM 和 逻辑回归，考虑在 SVM 得到的解上做一个 **缩放** 和 **平移**，然后再做逻辑回归，当 SVM 得到很好的解，那么缩放 A > 0，而平移 B &approx; 0：
+
+<img src="http://latex.codecogs.com/svg.latex?{g(x)=\theta\Big(A\cdot(\mathbf{w}_\textrm{SVM}^T\boldsymbol{\Phi}(x)+b_\textrm{SVM})+B\Big)}"/>
+
+这样相当于用 SVM 做`特征转换`，然后用逻辑回归做微调，新的逻辑回归问题是：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{A,B}\,\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Bigg(-\mathrm{y}_n\Big(A\cdot\underbrace{(\mathbf{w}_\textrm{SVM}^T\boldsymbol{\Phi}(\mathbf{x}_n)+b_\textrm{SVM})}_{\boldsymbol{\Phi}_\textrm{SVM}(\mathbf{x}_n)}+B\Big)\Bigg)\Bigg)}"/>
+
+
+
 
 
 <!--  -->
