@@ -493,7 +493,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ## Lecture 5: Kernel Logistic Regression
 
-
+—— 介绍核函数逻辑回归
 
 ### 软边界 SVM 是一种正则化
 
@@ -528,8 +528,47 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{A,B}\,\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Bigg(-\mathrm{y}_n\Big(A\cdot\underbrace{(\mathbf{w}_\textrm{SVM}^T\boldsymbol{\Phi}(\mathbf{x}_n)+b_\textrm{SVM})}_{\boldsymbol{\Phi}_\textrm{SVM}(\mathbf{x}_n)}+B\Big)\Bigg)\Bigg)}"/>
 
+### 核函数逻辑回归
 
+上面的这种方式看起来就很麻烦，而逻辑回归也不是一个二次规划问题，那还能怎么直接利用 SVM 的好处（比如核函数）呢？
 
+SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运算，如果 **w** 是 **z** 的线性组合，那么就可以用核函数！
+
+而在 SVM 和 PLA 甚至是 SGD 的逻辑回归中的 **w** 都是 **z** 的线性组合，只要最佳的 **w** 可以用 **z** 的线性组合`表示`，那么就有可能用核函数简化！
+
+其实，任何 L2 正则化的`线性模型`中最优 **w** 都可以用 **z** 的线性组合表示：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}\textrm{err}(\mathrm{y}_n,\,\mathbf{w}^T\mathbf{z}_n);\Rightarrow\,\mathbf{w}_{*}=\sum_{N}^{n=1}\beta_n\mathbf{z}_n}"/>
+
+我们可以把 **w** 拆分成垂直和平行于 **z** 的两个部分，我们希望垂直项是 **0**：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}_{*}=\mathbf{w}_{\|}+\mathbf{w}_{\perp}}"/>
+
+如果最佳解的垂直项不是 **0**，对于后面的错误项，**w** 和 **z** 相乘，垂直项没有影响，而对于前面这一项：
+
+<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}_{*}^T\mathbf{w}_{*}=\mathbf{w}_{\|}^T\mathbf{w}_{\|}+2\mathbf{w}_{\|}^T\mathbf{w}_{\perp}+\mathbf{w}_{\perp}^T\mathbf{w}_{\perp}>\mathbf{w}_{\|}^T\mathbf{w}_{\|}}"/>
+
+平行项是更小更好的解，出现矛盾！所以最佳解的垂直项是 **0**！
+
+任何 L2 正则化的线性模型都可以用核函数简化！
+
+---
+
+那么对于 L2 正则化的逻辑回归：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{w}}\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}\log\big(1+\exp(-\mathrm{y}_n\mathbf{w}^T\mathbf{z}_n)\big)}"/>
+
+将最优解 **w** = &sum; &beta;<sub>n</sub><b>z</b><sub>n</sub> 带入：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{\beta}}\frac{\lambda}{N}\sum_{n=1}^{N}\sum_{m=1}^{N}\beta_n\beta_m\,K(\mathbf{x}_n,\mathbf{x}_m)+\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Big(-\mathrm{y}_n\sum_{m=1}^{N}\beta_m\,K(\mathbf{x}_m,\mathbf{x}_n)\Big)\Bigg)}"/>
+
+然后用 SGD 求解就好了，这就是 **核函数逻辑回归（KLR）**。不过和 SVM 不一样的是，&beta; 通常都不是 0。
+
+这个公式也可以看成是 **x** 在 K 上做`特征转换`之后和 &beta; 相乘，加上 &beta; 和 &beta; 相乘 再乘以 K。因此也可以看成是 &beta; 的线性模型：数据经过 K 特征转换，并且用 K 做正则化。
+
+---
+---
+---
 
 
 <!--  -->
