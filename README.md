@@ -49,13 +49,13 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 <!-- - ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}\)) -->
 - PLA 算法
 
-对于一些问题，可能存在多种 PLA 的解都可以把数据分开，得到这些解取决于把数据放入 PLA 算法的顺序，并且看上去“一样好”。
+但是对于一些问题，可能存在多种 PLA 的解都可以把数据分开，得到的解取决于把数据放入 PLA 算法的顺序，并且这些解看上去“一样好”！
 
 ![](./Snapshot/Snap01.png)
 
-但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些噪音的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪音、误差。
+但是我们 **人类** 会倾向于选择最右边的这个，这是因为当存在一些`噪音`的时候（比如测试数据和训练数据之间存在一些误差）最右边的这个线可以容忍最多的噪音、误差。
 
-所以我们希望 **每个点都和我们的线距离最远**，也可以说我们希望我们能够找到一个 **最胖** 的线，这个线离它最近的点的距离最远。
+所以，我们希望 **每个点都和我们的线距离最远**，也可以说我们希望我们能够找到一个 **最胖** 的线，这个线离它最近的点的距离最远。
 这个线有多“胖”，就是说这个线的 **边界 (margin)** 有多大。
 
 总结一下：
@@ -67,7 +67,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 简化问题
 
-首先，需要把线性分类问题中的 <b>w</b><sub>0</sub> 单独拿出来讨论，称之为 b，并把 <b>x</b><sub>0</sub> 从原先的 <b>x</b> 中去掉：
+首先，需要把线性分类问题中的 <b>w</b><sub>0</sub> 单独拿出来讨论，称之为 <i>b</i>，并把 <b>x</b><sub>0</sub> 从原先的 <b>x</b> 中去掉：
 <img src="http://latex.codecogs.com/svg.latex?{h(\mathbf{x})=\mathrm{sign}(\mathbf{w}^T\mathbf{x}+b)}"/>
 <!-- ![](https://render.githubusercontent.com/render/math?math=h\(\mathbf{x}\)=\mathrm{sign}\(\mathbf{w}^T\mathbf{x}%2Bb\)) -->
 
@@ -84,15 +84,12 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 - **w** 与超平面上任意一点的乘积为 0 ，因此 **w** 相当于超平面的法向量（<img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}^T\mathbf{x}'+b=0}"/>）
 <!-- （![](https://render.githubusercontent.com/render/math?math=\mathbf{w}^T\mathbf{x}'%2Bb=0)） -->
 
-- 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ w ）上的投影
-- 因为这数据点可以被分类器（超平面）区分，因此有 <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0}"/>
-<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)\gt0) -->
+- 数据点和超平面的距离，相当于数据点和连接的向量在垂直于超平面方向（ **w** ）上的投影
+- 因为这数据点可以被分类器（超平面）区分，因此有 y<sub>n </sub>(<b>w</b><sup><i>T</i></sup><b>x</b><sub>n</sub> + <i>b</i>) > 0
 
 所以距离可以简化为：
 
 <img src="http://latex.codecogs.com/svg.latex?{\textrm{distance}(\mathbf{x},b,\mathbf{w})=|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}(\mathbf{x}-\mathbf{x}')|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T+b|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)}"/>
-
-<!-- ![](https://render.githubusercontent.com/render/math?math=\mathrm{distance}\(\mathbf{x},b,\mathbf{w}\)=\left|\frac{\mathbf{w}^T}{\|\mathbf{w}\|}\(\mathbf{x}-\mathbf{x}'\)\right|=\frac{1}{\|\mathbf{w}\|}|\mathbf{w}^T%2Bb|=\frac{1}{\|\mathbf{w}\|}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)) -->
 
 #### 简化条件 - 向量缩放和边界的定义
 
@@ -101,10 +98,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 因此，我们可以对这个向量进行一个 **特殊的缩放**，使：
 <img src="http://latex.codecogs.com/svg.latex?{\min_{n=1,\dots,N}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)=1}"/>
 
-<!-- ![](https://render.githubusercontent.com/render/math?math=\underset{n=1\,\\!\\!...\,\\!\\!N}{\min}\mathrm{y}_n\(\mathbf{w}^T\mathbf{x}_n%2Bb\)=1) -->
-
 这样操作之后有两个好处：
-1. 显然在这种缩放下可以保证 <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)>0}"/>，因此这个条件可以去掉；
+1. 显然在这种缩放下可以保证 y<sub>n </sub>(<b>w</b><sup><i>T</i></sup><b>x</b><sub>n</sub> + <i>b</i>) > 0，因此这个条件可以去掉；
 2. 边界变成 <img src="http://latex.codecogs.com/svg.latex?{\frac{1}{\|\mathbf{w}\|}}"/>
 
 所以这个问题就被简化为：
@@ -113,13 +108,15 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 #### 简化条件 - 有帮助的宽松
 
-我们继续简化这个问题，我们先将条件 **放宽** 到：对于所有的数据（所有的 n ）有 <img src="http://latex.codecogs.com/svg.latex?{\mathrm{y}_n(\mathbf{w}^T\mathbf{x}_n+b)\,\ge\,1}"/>
+我们继续简化这个问题，我们先将条件 **放宽** 到：对于所有的数据（所有的 n ）有 y<sub>n </sub>(<b>w</b><sup><i>T</i></sup><b>x</b><sub>n</sub> + <i>b</i>) &ge; 1
 
-如果 **大于等于** 中的 **等于** 对于宽松后的解不成立，那么这个 **放宽** 后的问题与之前的问题是不同的。
+需要注意的是，如果 **大于等于** 中的 **等于** 对于宽松后的解不成立，那么这个 **放宽** 后的问题与之前的问题是不同的。
 
-但是，如果等于不成立，那么我们必然可以找到一个新的 **缩放** 使得 **等于** 成立，并且这个新的 **缩放** 是比原来的 **缩放** 程度更大，因此 || **w** || 只会更小，因此我们能找到一个更大的 **边界**，这就与宽松后的解产生了矛盾，因此这个宽松中的等于是必然成立的。
+但是，如果等于不成立，比如 y<sub>n </sub>(<b>w</b><sup><i>T</i></sup><b>x</b><sub>n</sub> + <i>b</i>) &ge; 1.126。那么，我们必然可以找到一个新的 **缩放** （**w** 和 <i>b</i> 都除以 1.126），使得 **等于** 成立，并且这个新的 **缩放** 是比原来的 **缩放** 程度更大，因此 || **w** || 只会更小，因此我们能找到一个更大的 **边界**，这就与宽松后的解产生了矛盾，因此这个宽松中的等于是必然成立的。
 
-然后我们通过取倒数将最大化问题转成最小化问题，并用平方去掉绝对值（根号），再加上一个常数项。
+然后，我们通过取倒数将最大化问题转成最小化问题，并用平方去掉绝对值（根号），再加上一个常数项：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\;\textrm{s.t.}\;\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,\dots,N}"/>
 
 ![](./Snapshot/Snap03.png)
 
@@ -132,17 +129,17 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 ####### 感受数学的力量吧！！！ #######
 ```
 
+---
+
 那么我们继续来求解这个问题，这个问题有一些特性：
 - 这个问题是`凸的二次函数`
-- 这个问题是 **w** 和 b 的`线性运算`
+- 这个问题是 **w** 和 <i>b</i> 的`线性运算`
 
 具有这种特性的问题被称为 **二次规划 (Quadratic Programming, QP)**，有很多现成的工具来求解这种问题，那么我们只要把这个问题转化成标准二次规划问题的形式就很好处理了。（作为“文科生”，这段转化忽略...）
 
 ![](./Snapshot/Snap04.png)
 
 这就是硬边界（hard-margin，每个数据都是正确区分的）的线性（非线性变换后线性也可以）支持向量机的标准解法。
-
----
 
 ### 支持向量机的理论保证
 
@@ -151,7 +148,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 |                |              Minimize               |                 Constraint                 |
 |:--------------:|:-----------------------------------:|:------------------------------------------:|
 | Regularization |         <i>E</i><sub>in</sub>       | <b>w</b><sup><i>T</i></sup><b>w</b> &le; C |
-|       SVM      | <b>w</b><sup><i>T</i></sup><b>w</b> |   <i>E</i><sub>in</sub>=0 [and scaling]    |
+|       SVM      | <b>w</b><sup><i>T</i></sup><b>w</b> |  <i>E</i><sub>in</sub> = 0 [and scaling]   |
 
 所以 SVM 和正则化有些类似。
 
@@ -179,15 +176,13 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 在上面我们介绍了 SVM 的标准解法（转化成`二次规划`问题），并且我们可以利用`特征转换`把 **x** 转换到 **z** 空间中，这样在`VC`上我们就可以做到有很高的复杂度，但又因为`边界`限制而没有那么多的复杂度。
 
-但是还有一个问题，因为 QP 有 <i>d</i>+1 个变量，当我们使用的特征转换很强大的时候，转换后的 <i>d</i> 就会很大，因此这个二次规划问题也很难解。我们希望解 SVM 的过程能够和  <i>d</i> 没关系，比如夸张点 <i>d</i> 无穷大也能解。
+但是还有一个问题，因为 QP 有 <i>d</i>+1 个变量，当我们使用的特征转换很强大的时候，转换后的 <i>d</i> 就会很大，因此这个二次规划问题也很难解。我们希望解 SVM 的过程能够和  <i>d</i> 没关系，比如夸张到 <i>d</i> 无穷大也能解。
 
-那么下面我们就来将原来的 SVM 求解中的有 <i>d</i>+1 个变量和 N 个条件 的 QP，转换成它的 **对偶问题**，这新的问题只有 N 个变量和 N+1 个条件。这里将有很多很多的数学（之前的还不算多...），我们会只介绍概念和重点。
+那么，下面我们就来将原来的 SVM 求解中的有 <i>d</i>+1 个变量和 N 个条件 的 QP，转换成它的 **对偶问题**，这新的问题只有 N 个变量和 N+1 个条件。这里将有很多很多的数学（之前的还不算多...），我们会只介绍概念和重点。
 
-我们用到了一个很重要的工具就是 **拉格朗日乘数 Lagrange Multiplier**，常用于解决有条件的最佳化问题。在《基石》，我们在做`正则化`的时候有用到，将正则化的条件放进最小化的问题中。
+我们用到了一个很重要的工具就是 **拉格朗日乘数 Lagrange Multiplier**，它常用于解决有条件的最佳化问题。在《基石》中，我们在做`正则化`的时候就有用到，用它将正则化的条件放进最小化的问题中。
 
-不一样的地方是，在正则化的时候，&lambda; 是限制条件常数 C 的一种代替，因此也是常数。
-
-而在 SVM 中，我们把 &lambda; 当做一个变量来代替原本 SVM 的变量来解，这就是对偶问题。因为 SVM 有 N 个条件，所以就有 N 个 &lambda;。
+不一样的地方是，在正则化的时候，&lambda; 是限制条件常数 C 的一种代替，因此也是常数。而在 SVM 中，我们把 &lambda; 当做一个变量来代替原本 SVM 的变量来解，这就是它的 **对偶问题**。因为 SVM 有 N 个条件，所以就有 N 个 &lambda;。
 
 ---
 
@@ -197,9 +192,9 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 原来的 SVM 问题：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\textrm{\,\,s.\,t.\,\,}\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,\dots,N}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}\;\textrm{s.t.}\;\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1\,\textrm{for}\,n=1,\dots,N}"/>
 
-我们构建一个 **拉格朗日函数** （其中的 a<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
+我们构建一个 **拉格朗日函数** （其中的 &alpha;<sub>n</sub> 相当于 &lambda;<sub>n</sub>）：
 
 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})=\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}}_{\textrm{objective}}\;+\;\sum_{n=1}^N\alpha_n\underbrace{(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))}_{\textrm{constraint}}}"/>
 
@@ -208,7 +203,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 <img src="http://latex.codecogs.com/svg.latex?{\textrm{SVM}\,\equiv\,\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}"/>
 
 这是因为：
-- 限制 &alpha; 大于 0
+- 限制 &alpha; 大于等于 0
 - 当条件不满足时，`条件项`大于 0，最大化拉格朗日函数会得到无穷大
 - 当条件满足时，`条件项`小于等于 0，最大化拉格朗日函数等于`目标项`
 - 对`目标项`最小化就等同于原来的 SVM 问题
@@ -219,11 +214,11 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}')}"/>
 
-对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（**拉格朗日对偶问题**）：
+对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（这就是 **拉格朗日对偶问题**）：
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\,\ge\,\underbrace{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)}_{\textrm{Lagrange\;dual\;problem}}}"/>
 
-这个拉格朗日对偶问题是 SVM 问题的下限（小于等于），下限是一个弱对偶关系。如果等号成立的话（强对偶关系），我们就可以用右边的问题代替原来的 SVM，这样的好处是右边对 b 和 **w** 的最小化是没有条件的，很好解。
+这个拉格朗日对偶问题是 SVM 问题的`下限`（小于等于），下限是一个 **弱对偶关系**。如果等号成立的话（**强对偶关系**），我们就可以用右边的问题代替原来的 SVM（这样的好处是右边对 <i>b</i> 和 **w** 的最小化是没有条件的，很好解）。
 
 如果这个问题是凸的、有解（线性可分）并且只有线性的限制条件，这个`强对偶关系`就成立，SVM 符合这些条件，等号成立（这里“文科生”了）。
 
@@ -233,7 +228,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
 
-因为`拉格朗日函数`的最小化没有条件，所以只要求导（偏微分导数）就可以了，拉格朗日函数是 b 、 **w** 和 &alpha; 的函数，我们先对 b 求偏微分：
+因为`拉格朗日函数`的最小化没有条件，所以只要求导（偏微分导数）就可以了，拉格朗日函数是 <i>b</i> 、 **w** 和 &alpha; 的函数，我们先对 <i>b</i> 求偏微分：
 
 <img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}{\partial{b}}=-\sum^{N}_{n=1}\alpha_n\mathrm{y}_n=0}"/>
 
@@ -241,7 +236,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n)}\right)}"/>
 
-同时，因为 b 的系数为 0 因此 b 被去掉了。但是 b 在我们做预测的时候是有用的（需要计算），没关系，后面有办法再把 b 算出来。
+同时，因为 <i>b</i> 的系数为 0，因此 <i>b</i> 被去掉了。但是 <i>b</i> 在我们做预测的时候是有用的（需要计算），没关系，后面有办法再把 <i>b</i> 算出来。
 
 那么我们继续对 **w** 求偏微分：
 
@@ -263,7 +258,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 现在 SVM 问题被转化成了只和 &alpha; 相关的最佳化问题，我们再来做一些简化。首先我们通过取负把最大化问题转化成最小化问题：（因为我们现在只讨论 &alpha; 所以和 **w** 相关的条件可以不用处理）
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\alpha}}\frac{1}{2}\sum^{N}_{n=1}\sum^{N}_{m=1}\alpha_n\alpha_m\mathrm{y}_n\mathrm{y}_m\mathbf{z}_n^T\mathbf{z}_m-\sum^{N}_{n=1}\alpha_n\textrm{\,\,s.\,t.\,\,}\sum_{n=1}^{N}\alpha_n\mathrm{y}_n=0;\;\alpha_n\,\ge\,0,\textrm{for}\,n=1,\dots,N}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\alpha}}\frac{1}{2}\sum^{N}_{n=1}\sum^{N}_{m=1}\alpha_n\alpha_m\mathrm{y}_n\mathrm{y}_m\mathbf{z}_n^T\mathbf{z}_m-\sum^{N}_{n=1}\alpha_n\;\textrm{s.t.}\;\sum_{n=1}^{N}\alpha_n\mathrm{y}_n=0;\;\alpha_n\,\ge\,0,\textrm{for}\,n=1,\dots,N}"/>
 
 这个最小化问题有 N 个变量（&alpha;）和 N+1 个条件！并且这个问题也是一个凸的二次规划问题！下面只要把这个问题转化成标准二次规划问题的形式就好了！
 
@@ -277,17 +272,15 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ---
 
-当我们得到了 &alpha; 之后，我们需要用 KKT 条件来算出 b 和 **w**：
+当我们得到了 &alpha; 之后，我们需要用 KKT 条件来算出 <i>b</i> 和 **w**：
 
 <img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}=\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n}"/>
 
-对于 b ，如果 &alpha;<sub>n</sub> > 0 ，则可利用拉格朗日函数中的条件项也可以算出：
+对于 <i>b</i>，如果 &alpha;<sub>n</sub> > 0，则可利用拉格朗日函数中的条件项也可以算出：
 
 <img src="http://latex.codecogs.com/svg.latex?{\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))=0\;\Rightarrow\;b=\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n}"/>
 
-这些 &alpha;<sub>n</sub> > 0 的那些数据点就是在边界上的`支持向量`。
-
-在边界上的那些点是`支持向量的候选`，而那些 &alpha;<sub>n</sub> > 0 的点才是真的 **支持向量**。
+前面我们说过，在边界上的那些点是`支持向量的候选`，只有那些 &alpha;<sub>n</sub> > 0 的点才是真的 **支持向量**。
 
 ### SVM 其他的信息
 
@@ -295,7 +288,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\mathbf{w}=\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n=\sum_\textrm{SV}\alpha_n\mathrm{y}_n\mathbf{z}_n}"/>
 
-而 b 则可以用任意一个支持向量计算出来。
+而 <i>b</i> 则可以用任意一个支持向量计算出来。
 
 这和之前我们讲 SVM 的几何意义是相似的，只有支持向量有用，而其他的数据没有用。因此 SVM 也可以看成是一个找出支持向量的机制！
 
@@ -335,7 +328,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{q_{n,m}=\mathrm{y}_n\mathrm{y}_m\mathbf{z}^T_n\mathbf{z}_m=\mathrm{y}_n\mathrm{y}_{m}K(\mathbf{x}_n,\mathbf{x}_m)}"/>
 
-不仅如此，还有很多东西都可以用核函数来节约计算，比如 b：
+不仅如此，还有很多东西都可以用核函数来节约计算，比如 <i>b</i>：
 
 <img src="http://latex.codecogs.com/svg.latex?{b=\mathrm{y}_\textrm{sv}-\mathbf{w}^T\mathbf{z}_\textrm{sv}}=\mathrm{y}_\textrm{sv}-\left(\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n\right)\mathbf{z}_\textrm{sv}=\mathrm{y}_\textrm{sv}-\sum_{n=1}^N\alpha_n\mathrm{y}_{n}\left\Big(K(\mathbf{x}_n,\mathbf{x}_\textrm{sv})\right\Big)}"/>
 
@@ -430,25 +423,27 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 因此，实际应用中我们应该能够容忍一些噪音。在《基石》中，我们讲过一个`口袋算法`，使分类器在数据集中出现的错误最少，我们也可以把它运用在 SVM 上：
 
-<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\infty\cdot[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\end{align*}}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\\\textrm{s.t.}\;&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\infty\cdot[\![\mathrm{y}_n\ne\textrm{sign}(\mathbf{w}^T\mathbf{z}_n+b)]\!]\end{align*}}"/>
 
 这里 的 C 是可以用来调节（权衡）`边界`和`噪音容忍程度`的参数。
 
-但是这样一来这个问题就不是一个 QP 问题了，因此之前我们做的所有努力就都不能用了。除此以外，小和大的错误没有区分，显然这也是不好的。
+---
 
-因此我们提出一个新的参数：“边界违背程度”，用这个参数来代替错误的个数来表示错误，这样就可以保证我们仍然是一个 QP 问题，这就是软边界的 SVM：
+但是，这样一来这个问题就不是一个 QP 问题了，因此之前我们做的所有努力就都不能用了。除此以外，小和大的错误没有区分，显然这也是不好的。
 
-<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{\,\,s.\,t.\,\,}&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
+因此我们提出一个新的参数：“**边界违背程度**”，用这个参数来代替错误的个数来表示错误，这样就可以保证我们仍然是一个 QP 问题，这就是软边界的 SVM：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{s.t.}\;&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
 
 这是一个有 <i>d</i>+1+N 个变量和 2N 个条件 的 QP，我们接下来就可以用和前面硬边界 SVM 类似的方法来解决它。
 
 ### 对偶问题
 
-既然现在我们得到的问题和，硬边界 SVM 是类似的 QP 问题，那么解决的方法也是类似的，我们还是先构建一个拉格朗日函数来化解这个问题：
+既然现在我们的问题和硬边界 SVM 是类似的 QP 问题，那么解决的方法也是类似的，我们还是先构建一个`拉格朗日函数`来化解这个问题：
 
 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\xi},\boldsymbol{\alpha},\boldsymbol{\beta})={\frac{1}{2}\mathbf{w}^T\mathbf{w}}+C\cdot\sum_{n=1}^{N}\xi_n\;+\;\sum_{n=1}^N\alpha_n\cdot(1-\xi_n-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))+\sum_{n=1}^N\beta_n\cdot(-\xi_n)}"/>
 
-拉格朗日对偶问题：
+然后转化成`拉格朗日对偶问题`：
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_{\alpha_n\,\ge\,0,\beta_n\,\ge\,0}\left(\min_{b,\mathbf{w},\boldsymbol{\xi}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\xi},\boldsymbol{\alpha},\boldsymbol{\beta})\right)}"/>
 
@@ -456,7 +451,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}}{\partial{\xi_n}}=C-\alpha_n-\beta_n=0}"/>
 
-这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 &xi;<sub>n</sub>（和之前消掉 b 类似），于是得到：
+这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 &xi;<sub>n</sub>（和之前消掉 <i>b</i> 类似），于是得到：
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_{0\,\le\,\alpha_n\,\le\,C}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}\right)}"/>
 
@@ -569,6 +564,7 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 ---
 ---
 ---
+
 
 
 <!--  -->
