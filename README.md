@@ -405,7 +405,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 其实还有其他的核函数，核函数的几何意义是两个向量的內积（相似性），那么是不是任意某个`相似性`的表示都可以作为核函数呢？不是的。因为核函数还有一些特性的要求（充分必要条件）：
 - 对称性
-- K 矩阵是半正定的
+- <i>K</i> 矩阵是半正定的
 
 不过“创造”一个新的核函数还是很难的。
 
@@ -492,16 +492,19 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 软边界 SVM 是一种正则化
 
-对于软边界的 SVM，我们可以把边界违背程度的条件带入公式：
+对于软边界的 SVM，我们可以把`边界违背程度`的条件带入公式：
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\max(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b),0)}"/>
 
-这个公式就有点儿像我们在做正则化的时候的操作，但是我们没有这么继续解下去是因为这不是 QP 问题，不能使用核函数，而且 max 不能微分不好解。这样看来 SVM 和正则化的关系更近了，那么我们能不能把 SVM 延伸到其他的问题上？
+这个公式就有点儿像我们在做正则化的时候的操作，但是我们没有这么继续做下去是因为这不是 QP 问题，不能使用核函数，而且 max 不能微分不好解。
+
+不过这样看来 SVM 和正则化的关系更近了，那么我们能不能把 SVM 延伸到其他的问题上？
 
 ### SVM 回归算法
 
 这种形式的软边界的 SVM 后面一项可以看做一种`错误的衡量`，和 0/1 error 相比，SVM error （又叫 hinge error）是它的上限。
-类似的，逻辑回归的 cross-entropy error 也是 0/1 error 的上限。其实这两个 error 是很相似的，因此 SVM 也可以看成是 L2 正则化的逻辑回归。
+
+类似的，逻辑回归的 cross-entropy error 也是 0/1 error 的上限。这两个 error 是很相似的，因此 SVM 也可以看成是 L2 正则化的逻辑回归。
 
 - err<sub>0/1</sub> = [[ys &le; 0]]
 - err<sub>SVM</sub> = max(1-ys,0)
@@ -525,15 +528,15 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 核函数逻辑回归
 
-上面的这种方式看起来就很麻烦，而逻辑回归也不是一个二次规划问题，那还能怎么直接利用 SVM 的好处（比如核函数）呢？
+上面的这种方式看起来就很麻烦，而且逻辑回归也不是一个二次规划问题，那还能怎么直接利用 SVM 的好处（比如核函数）呢？
 
 SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运算，如果 **w** 是 **z** 的线性组合，那么就可以用核函数！
 
-而在 SVM 和 PLA 甚至是 SGD 的逻辑回归中的 **w** 都是 **z** 的线性组合，只要最佳的 **w** 可以用 **z** 的线性组合`表示`，那么就有可能用核函数简化！
+在 SVM 、 PLA 甚至是 SGD 的逻辑回归中， **w** 都是 **z** 的线性组合，只要最佳的 **w** 可以用 **z** 的线性组合`表示`，那么就有可能用核函数简化！
 
 其实，任何 L2 正则化的`线性模型`中最优 **w** 都可以用 **z** 的线性组合表示：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}\textrm{err}(\mathrm{y}_n,\,\mathbf{w}^T\mathbf{z}_n);\Rightarrow\,\mathbf{w}_{*}=\sum_{N}^{n=1}\beta_n\mathbf{z}_n}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}\textrm{err}(\mathrm{y}_n,\,\mathbf{w}^T\mathbf{z}_n)\;\Longrightarrow\;\mathbf{w}_{*}=\sum_{N}^{n=1}\beta_n\mathbf{z}_n}"/>
 
 我们可以把 **w** 拆分成垂直和平行于 **z** 的两个部分，我们希望垂直项是 **0**：
 
@@ -559,7 +562,9 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 然后用 SGD 求解就好了，这就是 **核函数逻辑回归（KLR）**。不过和 SVM 不一样的是，&beta; 通常都不是 0。
 
-这个公式也可以看成是 **x** 在 K 上做`特征转换`之后和 &beta; 相乘，加上 &beta; 和 &beta; 相乘 再乘以 K。因此也可以看成是 &beta; 的线性模型：数据经过 K 特征转换，并且用 K 做正则化。
+这个公式也可以看成是 **x** 在 <i>K</i> 上做`特征转换`之后和 &beta; 相乘，加上 &beta; 和 &beta; 相乘 再乘以 <i>K</i>。
+
+因此也可以看成是 &beta; 的线性模型：数据经过 <i>K</i> 特征转换，并且用 <i>K</i> 做正则化。
 
 ---
 ---
