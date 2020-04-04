@@ -431,7 +431,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 但是，这样一来这个问题就不是一个 QP 问题了，因此之前我们做的所有努力就都不能用了。除此以外，小和大的错误没有区分，显然这也是不好的。
 
-因此我们提出一个新的参数：“**边界违背程度**”，用这个参数来代替错误的个数来表示错误，这样就可以保证我们仍然是一个 QP 问题，这就是软边界的 SVM：
+因此我们提出一个新的参数：“**边界违背程度**” <b>&xi;</b>，用这个参数来代替错误的个数来表示错误，这就是软边界的 SVM：
 
 <img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{s.t.}\;&\,\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)\,\ge\,1-\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
 
@@ -439,7 +439,9 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 ### 对偶问题
 
-既然现在我们的问题和硬边界 SVM 是类似的 QP 问题，那么解决的方法也是类似的，我们还是先构建一个`拉格朗日函数`来化解这个问题：
+既然现在我们的问题和硬边界 SVM 是类似的 QP 问题，那么解决的方法也是类似的。
+
+我们先构建一个`拉格朗日函数`来化解这个问题：
 
 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{L}(b,\mathbf{w},\boldsymbol{\xi},\boldsymbol{\alpha},\boldsymbol{\beta})={\frac{1}{2}\mathbf{w}^T\mathbf{w}}+C\cdot\sum_{n=1}^{N}\xi_n\;+\;\sum_{n=1}^N\alpha_n\cdot(1-\xi_n-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))+\sum_{n=1}^N\beta_n\cdot(-\xi_n)}"/>
 
@@ -451,7 +453,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}}{\partial{\xi_n}}=C-\alpha_n-\beta_n=0}"/>
 
-这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 &xi;<sub>n</sub>（和之前消掉 <i>b</i> 类似），于是得到：
+这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 <b>&xi;</b>（和之前消掉 <i>b</i> 类似），于是得到：
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_{0\,\le\,\alpha_n\,\le\,C}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}\right)}"/>
 
@@ -496,15 +498,17 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\max(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b),0)}"/>
 
-这个公式就有点儿像我们在做正则化的时候的操作，但是我们没有这么继续做下去是因为这不是 QP 问题，不能使用核函数，而且 max 不能微分不好解。
+这个公式就有点儿像我们在做正则化，一个 **w** 的限制项加上一个错误项，但是我们没有这么继续做下去是因为这不是 QP 问题，不能使用核函数，而且 max 不能微分不好解。
 
-不过这样看来 SVM 和正则化的关系更近了，那么我们能不能把 SVM 延伸到其他的问题上？
+不过这样看来 SVM 和正则化的关系更近了，那么我们能不能把 SVM 的解决思路延伸到其他的问题上？
 
 ### SVM 回归算法
 
-这种形式的软边界的 SVM 后面一项可以看做一种`错误的衡量`，和 0/1 error 相比，SVM error （又叫 hinge error）是它的上限。
+我们先来看看这种形式的软边界 SVM，后面一项可以看做一种`错误的衡量`。
 
-类似的，逻辑回归的 cross-entropy error 也是 0/1 error 的上限。这两个 error 是很相似的，因此 SVM 也可以看成是 L2 正则化的逻辑回归。
+和 0/1 error 相比，SVM error （又叫 hinge error）是它的上限。
+类似的，逻辑回归的 cross-entropy error 也是 0/1 error 的上限。
+这两个 error 是很相似的，因此 SVM 也可以看成是 `L2 正则化`的逻辑回归。
 
 - err<sub>0/1</sub> = [[ys &le; 0]]
 - err<sub>SVM</sub> = max(1-ys,0)
@@ -526,13 +530,13 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_{A,B}\,\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Bigg(-\mathrm{y}_n\Big(A\cdot\underbrace{(\mathbf{w}_\textrm{SVM}^T\boldsymbol{\Phi}(\mathbf{x}_n)+b_\textrm{SVM})}_{\boldsymbol{\Phi}_\textrm{SVM}(\mathbf{x}_n)}+B\Big)\Bigg)\Bigg)}"/>
 
-### 核函数逻辑回归
+### 核逻辑回归（Kernel Logistic Regression）
 
 上面的这种方式看起来就很麻烦，而且逻辑回归也不是一个二次规划问题，那还能怎么直接利用 SVM 的好处（比如核函数）呢？
 
 SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运算，如果 **w** 是 **z** 的线性组合，那么就可以用核函数！
 
-在 SVM 、 PLA 甚至是 SGD 的逻辑回归中， **w** 都是 **z** 的线性组合，只要最佳的 **w** 可以用 **z** 的线性组合`表示`，那么就有可能用核函数简化！
+在 SVM、PLA 甚至是 SGD 逻辑回归中， **w** 都是 **z** 的线性组合，只要最佳的 **w** 可以用 **z** 的线性组合`表示`，那么就有可能用核函数简化！
 
 其实，任何 L2 正则化的`线性模型`中最优 **w** 都可以用 **z** 的线性组合表示：
 
@@ -562,7 +566,7 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 <img src="http://latex.codecogs.com/svg.latex?{\min_\beta\frac{\lambda}{N}\sum_{n=1}^{N}\sum_{m=1}^{N}\beta_n\beta_m\,K(\mathbf{x}_n,\mathbf{x}_m)+\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Big(-\mathrm{y}_n\sum_{m=1}^{N}\beta_m\,K(\mathbf{x}_m,\mathbf{x}_n)\Big)\Bigg)}"/>
 
-然后用 SGD 求解就好了，这就是 **核函数逻辑回归（KLR）**。不过和 SVM 不一样的是，&beta; 通常都不是 0。
+然后用 SGD 求解就好了，这就是 **核逻辑回归（KLR）**。不过和 SVM 不一样的是，&beta; 通常都不是 0。
 
 这个公式也可以看成是 **x** 在 <i>K</i> 上做`特征转换`之后和 &beta; 相乘，加上 &beta; 和 &beta; 相乘 再乘以 <i>K</i>。
 
@@ -603,7 +607,10 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 这样我们就可以用核函数来做回归，不过这个需要 <i>O</i>(<i>N</i><sup>3</sup>) 的复杂度，而且 **K** 矩阵是稠密的。
 
----
+### Least-Squares SVM (LSSVM)
+
+我们用核岭回归来做分类时，又称为 **Least-Squares SVM (LSSVM)**。
+
 
 
 <!--  -->
