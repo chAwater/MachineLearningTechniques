@@ -548,7 +548,9 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 平行项是更小更好的解，出现矛盾！所以最佳解的垂直项是 **0**！
 
-任何 L2 正则化的线性模型都可以用核函数简化！
+任何 L2 正则化的线性模型中的最佳解 **w** 都可以用 **z** 的线性组合，这个叫做 **Representer Theorem**。
+
+因此很多这种问题都可以用核函数简化！
 
 ---
 
@@ -558,7 +560,7 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 将最优解 **w** = &sum; &beta;<sub>n</sub><b>z</b><sub>n</sub> 带入：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{\beta}}\frac{\lambda}{N}\sum_{n=1}^{N}\sum_{m=1}^{N}\beta_n\beta_m\,K(\mathbf{x}_n,\mathbf{x}_m)+\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Big(-\mathrm{y}_n\sum_{m=1}^{N}\beta_m\,K(\mathbf{x}_m,\mathbf{x}_n)\Big)\Bigg)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_\beta\frac{\lambda}{N}\sum_{n=1}^{N}\sum_{m=1}^{N}\beta_n\beta_m\,K(\mathbf{x}_n,\mathbf{x}_m)+\frac{1}{N}\sum_{n=1}^{N}\log\Bigg(1+\exp\Big(-\mathrm{y}_n\sum_{m=1}^{N}\beta_m\,K(\mathbf{x}_m,\mathbf{x}_n)\Big)\Bigg)}"/>
 
 然后用 SGD 求解就好了，这就是 **核函数逻辑回归（KLR）**。不过和 SVM 不一样的是，&beta; 通常都不是 0。
 
@@ -570,6 +572,38 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 ---
 ---
 
+## Lecture 6: Support Vector Regression
+
+
+### 核岭回归（Kernel Ridge Regression）
+
+在上面我们利用 `Representer Theorem` 优化了逻辑回归的问题，那么我们来看一下线性回归能否也用类似的方法优化。线性回归类似的形式是 `ridge regression`：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathbf{w}}\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}(\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n)^2}"/>
+
+最优解 **w** = &sum; &beta;<sub>n</sub><b>z</b><sub>n</sub> 带入：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_\beta\frac{\lambda}{N}\sum_{n=1}^{N}\sum_{m=1}^{N}\beta_n\beta_m\,K(\mathbf{x}_n,\mathbf{x}_m)+\frac{1}{N}\sum_{n=1}^{N}\Big(\mathrm{y}_n-\sum_{m=1}^{N}\beta_m\,K(\mathbf{x}_m,\mathbf{x}_n)\Big)^2}"/>
+
+向量表示：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\boldsymbol{\beta}}\frac{\lambda}{N}\boldsymbol{\beta}^{T}\mathbf{K}\boldsymbol{\beta}+\frac{1}{N}\sum_{n=1}^{N}\|\mathbf{y}-\mathbf{K}\boldsymbol{\beta}\|^2}"/>
+
+化简：
+
+<img src="http://latex.codecogs.com/svg.latex?{E_\textrm{aug}(\boldsymbol{\beta})=\frac{\lambda}{N}\boldsymbol{\beta}^{T}\mathbf{K}\boldsymbol{\beta}+\frac{1}{N}\sum_{n=1}^{N}(\boldsymbol{\beta}^{T}\mathbf{K}^T\mathbf{K}\boldsymbol{\beta}-2\boldsymbol{\beta}^{T}\mathbf{K}^T\mathbf{y}+\mathbf{y}^T\mathbf{y})}"/>
+
+求导：
+
+<img src="http://latex.codecogs.com/svg.latex?{\nabla\,E_\textrm{aug}(\boldsymbol{\beta})=\frac{2}{N}(\lambda\mathbf{K}^T\mathbf{I}\boldsymbol{\beta}+\mathbf{K}^T\mathbf{K}\boldsymbol{\beta}-\mathbf{K}^T\mathbf{y})=\frac{2}{N}\mathbf{K}^T\bigg((\lambda\mathbf{I}+\mathbf{K})\boldsymbol{\beta}-\mathbf{y}\bigg)=0}"/>
+
+所以有（这个解是可能的，因为 **K** 是半正定的，且 &lambda; > 0 ）：
+
+<img src="http://latex.codecogs.com/svg.latex?{\boldsymbol{\beta}=(\lambda\mathbf{I}+\mathbf{K})^{-1}\mathbf{y}}"/>
+
+这样我们就可以用核函数来做回归，不过这个需要 <i>O</i>(<i>N</i><sup>3</sup>) 的复杂度，而且 **K** 矩阵是稠密的。
+
+---
 
 
 <!--  -->
