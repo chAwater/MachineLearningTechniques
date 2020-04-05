@@ -212,7 +212,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 在 SVM 的对偶问题中，对于某一个特定的 &alpha;<sup>'</sup>，拉格朗日函数的值必定小于等于最大的那一个：
 
-<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\ge\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}')}"/>
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\left(\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})\right)\,\ge\,\min_{b,\mathbf{w}}\,\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha}')}"/>
 
 对不等式右边取最大化，不等式仍然成立，因为使拉格朗日函数最大的那个 &alpha;<sup>'</sup> 也包含在任意一个中，所以我们也可以把 &alpha;<sup>'</sup> 看做是 &alpha;（这就是 **拉格朗日对偶问题**）：
 
@@ -578,6 +578,7 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 ## Lecture 6: Support Vector Regression
 
+—— 介绍 Support Vector Regression (SVR) 的概念和推导过程
 
 ### 核岭回归（Kernel Ridge Regression）
 
@@ -601,16 +602,65 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 <img src="http://latex.codecogs.com/svg.latex?{\nabla\,E_\textrm{aug}(\boldsymbol{\beta})=\frac{2}{N}(\lambda\mathbf{K}^T\mathbf{I}\boldsymbol{\beta}+\mathbf{K}^T\mathbf{K}\boldsymbol{\beta}-\mathbf{K}^T\mathbf{y})=\frac{2}{N}\mathbf{K}^T\bigg((\lambda\mathbf{I}+\mathbf{K})\boldsymbol{\beta}-\mathbf{y}\bigg)=0}"/>
 
-所以有（这个解是可能的，因为 **K** 是半正定的，且 &lambda; > 0 ）：
+所以有：
 
 <img src="http://latex.codecogs.com/svg.latex?{\boldsymbol{\beta}=(\lambda\mathbf{I}+\mathbf{K})^{-1}\mathbf{y}}"/>
 
+这个解是可能的，因为 **K** 是半正定的，且 &lambda; > 0。
+
 这样我们就可以用核函数来做回归，不过这个需要 <i>O</i>(<i>N</i><sup>3</sup>) 的复杂度，而且 **K** 矩阵是稠密的。
 
-### Least-Squares SVM (LSSVM)
+当我们用核岭回归来做分类时，又称为 **Least-Squares SVM (LSSVM)**。
 
-我们用核岭回归来做分类时，又称为 **Least-Squares SVM (LSSVM)**。
+不过，核岭回归和核逻辑回归有一个问题是类似的，就是 &beta; 通常都不是 0，因此 SV 有很多，计算起来也比较很慢。那我们有没有办法可以让 &beta; 和 SVM 的 &alpha; 类似，更稀疏一些呢？
 
+### Support Vector Regression (SVR) 的原始问题
+
+考虑一个带有中立区的问题（tube regression），当错误比较小的时候，忽略错误；当错误比较大的时候，计算错误和中立区的距离：
+
+- |s-y| &le; &epsilon;: 0
+- |s-y| > &epsilon;: |s-y|-&epsilon;
+
+也就是：err(y,s) = max( 0,|s-y|-&epsilon; )
+
+和前面普通的线性回归（ err(y,s) = (s-y)<sup>2</sup> ）相比，在错误很小的时候 tube regression 的错误和线性回归是非常接近的。而当错误很大的时候 tube regression 的错误会小很多，这样有可能是好事，因为这样对噪音的容忍会多一些。
+
+下面我们就用 L2 正则化的 tube regression，来得到稀疏的 &beta;。因为这个 loss 和 SVM hinge error 是类似的。
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_\mathbf{w}\,\frac{\lambda}{N}\mathbf{w}^T\mathbf{w}+\frac{1}{N}\sum_{n=1}^{N}\max(0,|\mathbf{w}^T\mathbf{z}_n-\mathrm{y}_n|-\epsilon)}"/>
+
+这个和 SVM 有点儿像，我们可以先把它变成一个 QP 然后再用 KKT 条件得到稀疏。那我们先把这个公式写成更像 SVM 的形式：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{b,\mathbf{w}}\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\max(0,|\mathbf{w}^T\mathbf{z}_n-b-\mathrm{y}_n|-\epsilon)}"/>
+
+在我们处理 SVM 的时候引入了边界违背程度来去掉 max，这里我们也这样操作：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}\xi_n\\\textrm{s.t.}\;&\,|\mathbf{w}^T\mathbf{z}_n+b-\mathrm{y}_n|\,\ge\,\epsilon+\xi_n\;\textrm{and}\;\xi_n\,\ge\,0\end{align*}}"/>
+
+由于这个公式有取绝对值，也不是 QP，因此把绝对值拆成两项：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\,\min_{b,\mathbf{w},\boldsymbol{\xi}}\,&\,\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\cdot\sum_{n=1}^{N}(\xi_n^\land+\xi_n^\lor)\\\textrm{s.t.}\;&\,\,-\epsilon-\xi_n^\lor\,\le\,\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n-b\,\le\,\epsilon+\xi_n^\land\;\textrm{and}\;\xi_n^\land\,\ge\,0,\,\xi_n^\lor\,\ge\,0\end{align*}}"/>
+
+这就是 **Support Vector Regression (SVR)** 的原始问题（primal）。它是一个有 <i>d</i>+1+2N 个变量和 4N 个条件 的 QP。
+
+### Support Vector Regression (SVR) 的对偶问题
+
+有了 SVR 的原始问题，接下来就是转化成对偶问题，加入拉格朗日乘数，拉格朗日函数，拉格朗日对偶，求导这一系列的化简就好了，这里就不再赘述了。需要特别注意的几点是：
+
+- 有两个拉格朗日乘数
+    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_n^\land\;\textrm{for}\;\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n-b\,\le\,\epsilon+\xi_n^\land}"/>
+    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_n^\lor\;\textrm{for}\;\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n-b\,\ge\,-\epsilon-\xi_n^\lor}"/>
+- 最优解的 KKT 条件
+    - <img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}}{\partial{\mathrm{w}_i}}=0:\;\mathbf{w}=\sum_{n=1}^N\underbrace{(\alpha_n^\land-\alpha_n^\lor)}_{\beta_n}\mathbf{z}_n}"/>
+    - <img src="http://latex.codecogs.com/svg.latex?{\frac{\partial\mathcal{L}}{\partial{b}}=0:\;\sum_{n=1}^N(\alpha_n^\land-\alpha_n^\lor)=0}"/>
+    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_n^\land\cdot(\epsilon+\xi_n^\land-\mathrm{y}_n+\mathbf{w}^T\mathbf{z}_n+b)=0}"/>
+    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_n^\lor\cdot(\epsilon+\xi_n^\lor+\mathrm{y}_n-\mathbf{w}^T\mathbf{z}_n-b)=0}"/>
+
+![](./Snapshot/Snap12.png)
+
+对于那些落在 tube 里面的点，&beta; = 0，从而减少了 SV。
+
+###
 
 
 <!--  -->
