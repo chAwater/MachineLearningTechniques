@@ -580,6 +580,10 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 —— 介绍 Support Vector Regression (SVR) 的概念和推导过程
 
+—— 介绍 Kernel 在回归中的使用
+
+—— 总结 SVM 和 Kernel 模型
+
 ### 核岭回归（Kernel Ridge Regression）
 
 在上面我们利用 `Representer Theorem` 优化了逻辑回归的问题，那么我们来看一下线性回归能否也用类似的方法优化。线性回归类似的形式是 `ridge regression`：
@@ -682,5 +686,38 @@ Kernel 相关：
 ---
 ---
 
+## Lecture 7: Blending and Bagging
+
+——
+
+### Aggregation
+
+考虑你有很多个模型（<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>T</i></sub>），那么你要怎么选择这些模型？有几种策略：
+
+- 用 validation 选出（select）表现最好的那一个（之前我们用的是这个策略）
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=g_{t_{*}}(\mathbf{x})\;\textrm{with}\;t_{*}=\mathop{\arg\min}_{t\in\{1,2,\dots,T\}}E_\textrm{val}(g_t^-)}"/>
+
+- 让这些模型`投票`，最后综合（mix）做出结果！（当然也可以有不同的`投票`权重）
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)\;\textrm{with}\;\alpha_t\,\ge\,0}"/>
+
+- 根据在不同的条件下，选用不同的模型（combine）
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^{T}q_t(\mathbf{x})\cdot{g}_t(\mathbf{x})\bigg)\;\textrm{with}\;q_t(\mathbf{x})\,\ge\,0}"/>
+
+这三种策略后面的是包含前面的，最后这个模型就叫做 Aggregation 模型。
+
+第一种`选择`的方式，很简单也很普遍，但是它很依赖于模型的强度，只有一个很强的模型才能保证有很好的效果。
+
+那么对于 Aggregation，我们能否利用很多个不那么强的模型，群策群力做到好的结果呢？
+
+---
+
+先来看两个例子：
+
+![](./Snapshot/Snap13.png)
+
+### Blending
 
 <!--  -->
