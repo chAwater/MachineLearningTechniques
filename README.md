@@ -322,7 +322,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 果然，在这个例子上可以减少计算复杂度。
 
-我们把这个`特征转换`和`內积`的函数叫做 **核函数 (kernal function)**。
+我们把这个`特征转换`和`內积`的函数叫做 **核函数 (kernel function)**。
 
 这样一来，刚才说的 Q 矩阵可以用核函数来节约计算：
 
@@ -660,7 +660,27 @@ SVM 能够使用核函数的关键在于把 **z** 的內积换成 **x** 的运�
 
 对于那些落在 tube 里面的点，&beta; = 0，从而减少了 SV。
 
-###
+### SVM 总结
+
+总结一下我们目前学过的模型：
+
+在《基石》中：
+- PLA/Pocket
+- linear ridge regression
+- logistic regression
+
+SVM 相关的线性模型：
+- linear soft margin SVM
+- linear SVR
+
+Kernel 相关：
+- SVM
+- kernel ridge regression -> SVR
+- kernel logistic regression -> probabilistic SVM
+
+---
+---
+---
 
 
 <!--  -->
