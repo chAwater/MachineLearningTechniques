@@ -11,8 +11,8 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 - [机器学习基石上 (Machine Learning Foundations)-Mathematical Foundations](https://www.coursera.org/learn/ntumlone-mathematicalfoundations)
 - [机器学习基石下 (Machine Learning Foundations)-Algorithmic Foundations](https://www.coursera.org/learn/ntumlone-algorithmicfoundations)
-- [机器学习基石 Notebooks](https://github.com/chAwater/MachineLearningFoundations)
 - 机器学习技法（已下架，请移步油管或其他资源）
+- [机器学习基石 Notebooks](https://github.com/chAwater/MachineLearningFoundations)
 - by [Hsuan-Tien Lin](https://www.csie.ntu.edu.tw/~htlin/)
 
 ### 前言介绍
@@ -250,7 +250,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 <img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0,\sum\alpha_n\mathrm{y}_n=0,\mathbf{w}=\sum\alpha_n\mathrm{y}_n\mathbf{z}_n}\left(-\frac{1}{2}\|\sum^{N}_{n=1}\alpha_n\mathrm{y}_n\mathbf{z}_n\|^2+\sum^{N}_{n=1}\alpha_n\right)}"/>
 
-现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（ **KKT 条件**）：
+现在这个问题就只是和 &alpha; 相关的最佳化问题，总结一下现在所有的条件（**KKT 条件**）：
 
 ![](./Snapshot/Snap06.png)
 
@@ -692,7 +692,7 @@ Kernel 相关：
 
 ### Aggregation
 
-考虑你有很多个模型（<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>T</i></sub>），那么你要怎么选择这些模型？有几种策略：
+对于一个分类问题，如果你有很多个模型（<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>T</i></sub>），那么你要怎么选择这些模型？有几种策略：
 
 - 用 validation 选出（select）表现最好的那一个（之前我们用的是这个策略）
 
@@ -719,5 +719,50 @@ Kernel 相关：
 ![](./Snapshot/Snap13.png)
 
 ### Blending
+
+我们要介绍的第一个策略就是 Blending （混合），也就是投票的策略。
+
+对于二元分类问题：
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^{T}1\cdot{g}_t(\mathbf{x})\bigg)}"/>
+
+对于多元分类问题：
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\mathop{\arg\max}_{1\,\le\,k\,\le\,K}\sum_{t=1}^{T}[\![g_t(\mathbf{x})=k]\!]}"/>
+
+对于回归问题：
+
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\frac{1}{T}\sum_{t=1}^{T}g_t(\mathbf{x})}"/>
+
+对于这些例子，当 <i>g</i><sub>t</sub> 全都一样的时候，结果和用一个 <i>g</i><sub>t</sub> 是一样的。
+但当 <i>g</i><sub>t</sub> 很不一样的时候，**多数** 或者 **平均** 就有可能比原来的 **一个** 能得到更好的结果。
+
+我们以回归问题来证明一下（省略 **x** ）：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\textrm{avg}\big((g_t-f)^2\big)&=\textrm{avg}(g_t^2-2g_{t}f+f^2)\\&=\textrm{avg}(g_t^2)-2Gf+f^2\\&=\textrm{avg}(g_t^2)-2G^2+G^2+(G-f)^2\\&=\textrm{avg}(g_t^2-2g_{t}G+G^2)+(G-f)^2\\&=\textrm{avg}\big((g_t-G)^2\big)+(G-f)^2\end{align*}}"/>
+
+也就是说，对所有 <i>g</i><sub>t</sub> 错误的平均，等于 G 的错误加上 <i>g</i><sub>t</sub> 和 G 的差距（错误）的平均。
+
+如果不是对于所有的数据 **x** ，而是所有可能产生的数据，左边就是 <i>E</i><sub>out</sub>：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\textrm{avg}\big(E_\textrm{out}(g_t)\big)&=\textrm{avg}\big(\varepsilon(g_t-G)^2\big)&+E_\textrm{out}(G)\\&\ge\,0&+E_\textrm{out}(G)\end{align*}}"/>
+
+也就是说，随机选 <i>g</i><sub>t</sub> 错误的平均，比 G 的错误要大。
+
+---
+
+如果我们把所有 **数据** 分份，每次 _N_ 个数据，用 **算法** 从这个数据中得到 <i>g</i><sub>t</sub>，我们重复 _T_ 次，当 _T_ 趋于 **无限大** 时：
+
+<img src="http://latex.codecogs.com/svg.latex?{\overline{g}\;=\;\lim_{T\to\infty}G\;=\;\lim_{T\to\infty}\frac{1}{T}\sum_{t=1}^{T}g_t\;=\;\mathop{\boldsymbol{\varepsilon}}_{\mathcal{D}}\mathcal{A}\big(\mathcal{D}\big)}"/>
+
+带入：
+
+<img src="http://latex.codecogs.com/svg.latex?{\underbrace{\textrm{avg}\big(E_\textrm{out}(g_t)\big)}_{\textrm{performance\;of}\;\mathcal{A}}=\underbrace{\textrm{avg}\big(\varepsilon(g_t-\overline{g})^2\big)}_\textrm{variance}+\underbrace{E_\textrm{out}(\overline{g})}_\textrm{bias}}"/>
+
+Blending 方法能够减少前面的这一项，因此算法的表现可以提高。
+
+---
+
+
 
 <!--  -->
