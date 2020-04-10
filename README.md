@@ -761,7 +761,40 @@ Kernel 相关：
 
 Blending 方法能够减少前面的这一项，因此算法的表现可以提高。
 
+### Linear Blending
+
+下面介绍一下不同权重的投票，也就是 **Linear Blending**，相当于多个 <i>g</i><sub>t</sub> 进行线性组合，因此我们的问题变成：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\alpha_t\,\ge\,0}\frac{1}{N}\sum_{n=1}^{N}\bigg(\mathrm{y}_n-\sum_{t=1}^{T}\alpha_{t}g_t(\mathbf{x}_n)\bigg)^2}"/>
+
+这个问题很像是`带特征转换的线性回归`，只有一个小区别就是 &alpha; &ge; 0，后面我们再来解释：
+
+<img src="http://latex.codecogs.com/svg.latex?{\min_{\mathrm{w}_i}\frac{1}{N}\sum_{n=1}^{N}\bigg(\mathrm{y}_n-\sum_{i=1}^{\widetilde{d}}\mathrm{w}_{i}\phi_i(\mathbf{x}_n)\bigg)^2}"/>
+
+这也和我们之前在 SVM 讲过的 two-level learning 策略类似（先训练 SVM 再用逻辑回归），这里先训练一些 <i>g</i><sub>t</sub> 模型，再线性回归。
+
+也可以看成是 **线性模型** 加上 <b><i>g</i><sub>t</sub></b> **作为特征转换** 再加上 **条件**（&alpha; &ge; 0）。
+
+但是，实际上我们通常会忽略这个 **条件**，因为：
+
+<img src="http://latex.codecogs.com/svg.latex?{\textrm{if}\;\alpha_t<0\;\Longrightarrow\;\alpha_{t}g_t(\mathbf{x})=|\alpha_{t}|\big(-g_t(\mathbf{x})\big)}"/>
+
+也就是说对于 &alpha; &lt; 0 的 <i>g</i><sub>t</sub>，只要反过来使用这个模型就好了。
+
 ---
+
+Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会付出所有模型的复杂度加在一起的代价，甚至还会更高，因此在实际操作中我们一般不用 <i>E</i><sub>in</sub> 来选择 &alpha;，而是用 <i>E</i><sub>val</sub>。
+
+总结一下实际上的操作流程：
+1. 用训练数据得到一些模型 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{D}_\textrm{train}\;\Longrightarrow\;g_1^-,g_2^-,\dots,g_T^-}"/>
+2. 将这些模型作为特征转换 <img src="http://latex.codecogs.com/svg.latex?{\boldsymbol{\Phi}^-(\mathbf{x})=\big(g_1^-(\mathbf{x}),g_2^-(\mathbf{x}),\dots,g_T^-(\mathbf{x})\big)}"/>
+3. 转换验证数据 <img src="http://latex.codecogs.com/svg.latex?{\mathcal{D}_\textrm{val}\;\Longrightarrow\;\mathbf{z}_n=\big(\boldsymbol{\Phi}^-(\mathbf{x}_n),\mathrm{y}_n\big)}"/>
+4. 计算 &alpha;
+5. 用 &alpha; 和 **全部数据** 计算的 <i>g</i><sub>t</sub> 得到 G。
+
+这个先用 <i>g</i><sup>-</sup><sub>t</sub> 然后再用 <i>g</i><sub>t</sub> 的技巧在实际运用中能够有很大的提高！
+
+如果不是 Linear 模型做 Blending 就叫做 **Stacking**，但是要注意不要过拟合。
 
 
 
