@@ -688,7 +688,7 @@ Kernel 相关：
 
 ## Lecture 7: Blending and Bagging
 
-——
+—— 介绍基础的模型混合的方法
 
 ### Aggregation
 
@@ -795,6 +795,34 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 这个先用 <i>g</i><sup>-</sup><sub>t</sub> 然后再用 <i>g</i><sub>t</sub> 的技巧在实际运用中能够有很大的提高！
 
 如果不是 Linear 模型做 Blending 就叫做 **Stacking**，但是要注意不要过拟合。
+
+### Bagging (Bootstrap Aggregation)
+
+前面介绍的 Blending 是先得到一些 <i>g</i><sub>t</sub> 再集合起来，那么这些 **不一样的** <i>g</i><sub>t</sub> 是怎么得到的？
+
+- 来自不同的模型
+- 同一个模型不同的参数
+- 算法随机性的不同
+- 数据随机性的不同
+
+下面介绍的这种是用同一组数据得到不同的 <i>g</i><sub>t</sub>。
+
+前面我们说理想中的 Blending 的时候，用无限多的数据（分成无限多份 **新鲜的** 数据）和无限多的 <i>g</i><sub>t</sub> 消除了算法中的 variance。
+但是在实际运用中，不可能有无限多的数据。因此，我们用比较多的 <i>g</i><sub>t</sub> 和有限的数据来做，这就用到了统计中的工具 **Bootstrapping** 来模拟产生无限多的“真实的”数据。
+
+每次从数据集中取出 _N_ 组数据，然后放回（Sampling with replacement），重复这个过程很多次就可以产生模拟无限多的数据。
+
+用这种方法做的 Aggregation 就叫做 Bootstrap Aggregation，也叫 **Bagging**。
+这种方法对于对`数据随机性`很敏感的算法会很有效。
+
+---
+---
+---
+
+## Lecture 8: Adaptive Boosting
+
+
+
 
 
 
