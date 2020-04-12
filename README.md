@@ -696,7 +696,7 @@ Kernel 相关：
 
 - 用 validation 选出（select）表现最好的那一个（之前我们用的是这个策略）
 
-<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=g_{t_{*}}(\mathbf{x})\;\textrm{with}\;t_{*}=\mathop{\arg\min}_{t\in\{1,2,\dots,T\}}E_\textrm{val}(g_t^-)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=g_{t_{*}}(\mathbf{x})\;\textrm{with}\;t_{*}=\mathop{\arg\!\min}_{t\in\{1,2,\dots,T\}}E_\textrm{val}(g_t^-)}"/>
 
 - 让这些模型`投票`，最后综合（mix）做出结果！（当然也可以有不同的`投票`权重）
 
@@ -728,7 +728,7 @@ Kernel 相关：
 
 对于多元分类问题：
 
-<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\mathop{\arg\max}_{1\,\le\,k\,\le\,K}\sum_{t=1}^{T}[\![g_t(\mathbf{x})=k]\!]}"/>
+<img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\mathop{\arg\!\max}_{1\,\le\,k\,\le\,K}\sum_{t=1}^{T}[\![g_t(\mathbf{x})=k]\!]}"/>
 
 对于回归问题：
 
@@ -821,7 +821,7 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 ## Lecture 8: Adaptive Boosting
 
-——
+—— 介绍 AdaBoost 算法
 
 ### Boosting
 
@@ -836,7 +836,69 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 这就是 **Boosting** 概念的来源。
 
-###
+### Adaptive Boosting
 
+在我们做 Bagging 的 Bootstrapping 的时候，可以看成是给数据加上了一个权重（选中了的数据权重是选中的次数，没选中的权重是 0）：
+
+<img src="http://latex.codecogs.com/svg.latex?{E_\textrm{in}^{u}(h)=\frac{1}{N}\sum_{n=1}^{N}{u}_n\cdot\textrm{err}(\mathrm{y}_n,h(\mathbf{x}_n))}"/>
+
+当然，广义的权重可以是非整数。当我们用不同的 <i>u</i><sub>n</sub> 的时候，也会产生不同的 <i>g</i><sub>t</sub>，假设：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}g_t\;&\leftarrow&\;\mathop{\arg\!\min}_{h\in\mathcal{H}}\Bigg(\sum_{n=1}^{N}&\;\;u_n^{(t)}&\!\![\![\,\mathrm{y}_n\,\ne\,h(\mathbf{x}_n)\,]\!]\Bigg)\\g_{t+1}\;&\leftarrow&\;\mathop{\arg\!\min}_{h\in\mathcal{H}}\Bigg(\sum_{n=1}^{N}&\;\;u_n^{(t+1)}&\!\![\![\,\mathrm{y}_n\,\ne\,h(\mathbf{x}_n)\,]\!]\Bigg)\end{align*}}"/>
+
+我们希望 <i>g</i><sub>t</sub> 在 <i>u</i><sup>(t+1)</sup> 的情况下表现很不好，这样在 <i>u</i><sup>(t+1)</sup> 的时候得到的 <i>g</i><sub>t+1</sub> 就会和 <i>g</i><sub>t</sub> 很不一样，这样我们的模型整合才有意义。
+
+对于二元分类，我们希望 <i>g</i><sub>t</sub> 在 <i>u</i><sup>(t+1)</sup> 的情况下的表现和随机一样：
+
+<img src="http://latex.codecogs.com/svg.latex?{\frac{\sum_{n=1}^{N}u_n^{(t+1)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t+1)}}=\frac{1}{2}}"/>
+
+做一些拆分，分成对和错的部分，上面就是说我们希望这两项相等：
+
+<img src="http://latex.codecogs.com/svg.latex?{\square_{t+1}=\sum_{n=1}^{N}u_n^{(t+1)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!];\;\bigcirc_{t+1}=\sum_{n=1}^{N}u_n^{(t+1)}[\![\mathrm{y}_n\,=\,g_t(\mathbf{x}_n)]\!]}"/>
+
+我们可以用 **缩放** 来实现这一点：对于 <i>u</i><sup>(t)</sup>，`对的`和`错的`部分不相等，为了使在 <i>u</i><sup>(t)</sup> 时相等，可以将那些 <i>u</i><sup>(t)</sup> `对的`项做`错的`放缩，而`错的`项做`对的`放缩。如果 **错误率** 是 <i>&epsilon;</i><sub>t</sub>，那么`对的`项乘以 <i>&epsilon;</i><sub>t</sub>，`对的`项乘以 1-<i>&epsilon;</i><sub>t</sub>。
+
+定义：
+
+<img src="http://latex.codecogs.com/svg.latex?{\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}}"/>
+
+并使：
+
+<img src="http://latex.codecogs.com/svg.latex?{\begin{align*}\textrm{`incorrect'}\;u^{t+1}\,&\gets&\textrm{incorrect}&\;u^t\;\cdot&\!\!\blacklozenge_{t}\\\textrm{`correct'}\;u^{t+1}\,&\gets&\textrm{correct}&\;u^t\;/&\!\!\blacklozenge_{t}\end{align*}}"/>
+
+在物理意义上，当 <i>&epsilon;</i><sub>t</sub> &le; 0.5 时，&blacklozenge; &ge; 1，相当于 **强调** 了犯错误的部分！
+
+---
+
+最后总结整理一下：
+
+1. 初始化：<img src="http://latex.codecogs.com/svg.latex?{u^{(1)}=[\frac{1}{N},\frac{1}{N},\dots,\frac{1}{N}]}"/>
+2. 循环 _t_ = 1,2,...,_T_
+3. 得到 <img src="http://latex.codecogs.com/svg.latex?{g_{t}\,\gets\,\mathcal{A}(\mathcal{D},u^{(t)})}"/>
+4. 更新 <img src="http://latex.codecogs.com/svg.latex?{u^{(t+1)}\,\gets\,u^{(t)}\;\textrm{by}\;\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}\;\textrm{and}\;\epsilon_t=\frac{\sum_{n=1}^{N}u_n^{(t)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t)}}}"/>
+5. 计算 <img src="http://latex.codecogs.com/svg.latex?{\alpha_t=\ln({\blacklozenge_{t}})}"/>
+6. 最后得到 <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)}"/>
+
+其中 &alpha; 这么选表现了当 <i>&epsilon;</i><sub>t</sub> 越大时（表现越不好的 <i>g</i><sub>t</sub>），&blacklozenge;<sub>t</sub> 越小，从而 &alpha;<sub>t</sub> 越小（最后在 G 中贡献越小）。
+
+这个算法就叫做 **Adaptive Boosting (AdaBoost)**
+
+---
+
+我们再来看一下这个算法的 VC（没有推导过程）：
+
+<img src="http://latex.codecogs.com/svg.latex?{E_\textrm{out}(G)\,\le\,E_\textrm{in}(G)+O\Bigg(\sqrt{\underbrace{O\big(d_\textrm{VC}(\mathcal{H})\,\cdot\,T\,\log\,T\big)}_{d_\textrm{VC}\textrm{\,of\,all\,possible}\,G}\cdot\frac{\log\,N}{N}}\Bigg)}"/>
+
+这个算法有两个很好的性质：
+1. 很快就可以做到很好的结果，而且只需要起始算法比随机好一点儿 <img src="http://latex.codecogs.com/svg.latex?{E_\textrm{in}(G)=0\;\textrm{after}\;T=O(\log\,N)\;\textrm{if}\;\epsilon_t\,\le\,\epsilon\,<\,\frac{1}{2}}"/>
+2. VC 随 _T_ 的增长很慢
+
+### AdaBoost 实例
+
+略
+
+---
+---
+---
 
 <!--  -->
