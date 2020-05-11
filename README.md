@@ -226,7 +226,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 下面来求解（化简）拉格朗日对偶问题：
 
-<img src="http://latex.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
+<img src="http://ibm.codecogs.com/svg.latex?{\max_\mathrm{{all}\,\alpha_n\,\ge\,0}\left(\min_{b,\mathbf{w}}\underbrace{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b))}_{\mathcal{L}(b,\mathbf{w},\boldsymbol{\alpha})}\right)}"/>
 
 因为`拉格朗日函数`的最小化没有条件，所以只要求导（偏微分导数）就可以了，拉格朗日函数是 <i>b</i> 、 **w** 和 &alpha; 的函数，我们先对 <i>b</i> 求偏微分：
 
@@ -330,7 +330,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 不仅如此，还有很多东西都可以用核函数来节约计算，比如 <i>b</i>：
 
-<img src="http://latex.codecogs.com/svg.latex?{b=\mathrm{y}_\textrm{sv}-\mathbf{w}^T\mathbf{z}_\textrm{sv}}=\mathrm{y}_\textrm{sv}-\left(\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n\right)\mathbf{z}_\textrm{sv}=\mathrm{y}_\textrm{sv}-\sum_{n=1}^N\alpha_n\mathrm{y}_{n}\left\Big(K(\mathbf{x}_n,\mathbf{x}_\textrm{sv})\right\Big)}"/>
+<img src="http://latex.codecogs.com/svg.latex?{b=\mathrm{y}_\textrm{sv}-\mathbf{w}^T\mathbf{z}_\textrm{sv}=\mathrm{y}_\textrm{sv}-\left(\sum_{n=1}^N\alpha_n\mathrm{y}_n\mathbf{z}_n\right)\mathbf{z}_\textrm{sv}=\mathrm{y}_\textrm{sv}-\sum_{n=1}^N\alpha_n\mathrm{y}_{n}\left\Big(K(\mathbf{x}_n,\mathbf{x}_\textrm{sv})\right\Big)}"/>
 
 还有做预测的时候：
 
@@ -455,7 +455,7 @@ My Notebooks for Machine Learning Techniques (by @hsuantien)
 
 这个新的条件就可以帮助我们简化，带入之后神奇的消掉了 <b>&xi;</b>（和之前消掉 <i>b</i> 类似），于是得到：
 
-<img src="http://latex.codecogs.com/svg.latex?{\max_{0\,\le\,\alpha_n\,\le\,C}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)}\right)}"/>
+<img src="http://ibm.codecogs.com/svg.latex?{\max_{0\,\le\,\alpha_n\,\le\,C}\left(\min_{b,\mathbf{w}}{\frac{1}{2}\mathbf{w}^T\mathbf{w}\;+\;\sum_{n=1}^N\alpha_n(1-\mathrm{y}_n(\mathbf{w}^T\mathbf{z}_n+b)})\right)}"/>
 
 除了 &alpha;<sub>n</sub> 多了一个上限是 C 的条件以外，其他和之前的 SVM 一样！因此之前的所有努力都可以继续用到这个新的 SVM 上来。
 
@@ -900,5 +900,40 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 ---
 ---
 ---
+
+## Lecture 9: Decision Tree
+
+——
+
+### 决策树（ Decision Tree ）
+
+总结一下前面学过的方法：
+
+| Aggregation Type |      Blending      |     Learning      |
+|:----------------:|:------------------:|:-----------------:|
+|     Uniform      | Voting / Averaging |      Bagging      |
+|   Non-Uniform    |       Linear       |     AdaBoost      |
+|   Conditional    |      Stacking      | **Decision Tree** |
+
+这里我们要讲的 **决策树** 是一种模仿人类决策过程的方法：
+
+![](./Snapshot/Snap14.png)
+
+可以用两种模式来表示一个决策树：
+
+1. 路径表示： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{t=1}^T[\![\mathbf{x}\,\textrm{on\,path\,}t]\!]\cdot\textrm{leaf}_t(\mathbf{x})}"/>
+
+2. 递归表示： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{c=1}^C[\![b(\mathbf{x})=C]\!]\cdot{G}_c(\mathbf{x})}"/>
+
+决策树有几个好处：
+1. **可解释的**
+2. 简单、有效
+
+也有一些缺点：
+1. 缺少理论保证
+2. 参数调节不太好理解
+3. 没有特别有代表的模型
+
+## 
 
 <!--  -->
