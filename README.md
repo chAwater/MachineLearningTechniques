@@ -905,7 +905,7 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 ——
 
-### 决策树（ Decision Tree ）
+### 决策树 (Decision Tree)
 
 总结一下前面学过的方法：
 
@@ -921,9 +921,9 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 可以用两种模式来表示一个决策树：
 
-1. 路径表示： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{t=1}^T[\![\mathbf{x}\,\textrm{on\,path\,}t]\!]\cdot\textrm{leaf}_t(\mathbf{x})}"/>
+1. **路径表示**（每种情况下的结果）： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{t=1}^T[\![\mathbf{x}\,\textrm{on\,path\,}t]\!]\cdot\textrm{leaf}_t(\mathbf{x})}"/>
 
-2. 递归表示： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{c=1}^C[\![b(\mathbf{x})=C]\!]\cdot{G}_c(\mathbf{x})}"/>
+2. **递归表示**（每种情况下的子树）： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{c=1}^C[\![b(\mathbf{x})=C]\!]\cdot{G}_c(\mathbf{x})}"/>
 
 决策树有几个好处：
 1. **可解释的**
@@ -934,6 +934,23 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 2. 参数调节不太好理解
 3. 没有特别有代表的模型
 
-## 
+### 决策树算法
+
+利用`递归表示`描述一个决策树的算法：
+1. 通过数据得到分支子树 (Branching criteria)
+2. 根据分支分割数据
+3. 使用分割后的数据训练分支子树，递归这个过程
+4. 确定递归的停止条件，得到决策树
+
+以 Classification and Regression Tree (C&RT) 算法为例，它有两个很简单的特点：
+- 每次将数据分为两份，得到两个分支子树（Binary tree）
+- 最后得到的一个常数解
+
+具体来说，这个算法用简单的单一规则（Decision stump）去分支子树，并引入 **纯化/纯度 (Purifying)** 的概念来评判子树：对于某个分支规则，计算子树两边的数据的纯度，判断这个分支规则是否是最优的。
+
+![](./Snapshot/Snap15.png)
+
+###
+
 
 <!--  -->
