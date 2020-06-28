@@ -872,17 +872,12 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 最后总结整理一下：
 
-1. 初始化
-    - <img src="http://latex.codecogs.com/svg.latex?{u^{(1)}=[\frac{1}{N},\frac{1}{N},\dots,\frac{1}{N}]}"/>
+1. 初始化 </br> <img src="http://latex.codecogs.com/svg.latex?{u^{(1)}=[\frac{1}{N},\frac{1}{N},\dots,\frac{1}{N}]}"/>
 2. 循环 _t_ = 1,2,...,_T_
-3. 得到
-    - <img src="http://latex.codecogs.com/svg.latex?{g_{t}\,\gets\,\mathcal{A}(\mathcal{D},u^{(t)})}"/>
-4. 更新
-    - <img src="http://latex.codecogs.com/svg.latex?{u^{(t+1)}\,\gets\,u^{(t)}\;\textrm{by}\;\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}\;\textrm{and}\;\epsilon_t=\frac{\sum_{n=1}^{N}u_n^{(t)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t)}}}"/>
-5. 计算
-    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_t=\ln({\blacklozenge_{t}})}"/>
-6. 最后得到
-    - <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)}"/>
+3. 得到 </br> <img src="http://latex.codecogs.com/svg.latex?{g_{t}\,\gets\,\mathcal{A}(\mathcal{D},u^{(t)})}"/>
+4. 更新 </br> <img src="http://latex.codecogs.com/svg.latex?{u^{(t+1)}\,\gets\,u^{(t)}\;\textrm{by}\;\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}\;\textrm{and}\;\epsilon_t=\frac{\sum_{n=1}^{N}u_n^{(t)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t)}}}"/>
+5. 计算 </br> <img src="http://latex.codecogs.com/svg.latex?{\alpha_t=\ln({\blacklozenge_{t}})}"/>
+6. 最后得到 </br> <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)}"/>
 
 其中 &alpha; 这么选表现了当 <i>&epsilon;</i><sub>t</sub> 越大时（表现越不好的 <i>g</i><sub>t</sub>），&blacklozenge;<sub>t</sub> 越小，从而 &alpha;<sub>t</sub> 越小（最后在 G 中贡献越小）。
 
