@@ -706,7 +706,7 @@ Kernel 相关：
 
 <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^{T}q_t(\mathbf{x})\cdot{g}_t(\mathbf{x})\bigg)\;\textrm{with}\;q_t(\mathbf{x})\,\ge\,0}"/>
 
-这三种策略后面的是包含前面的，最后这个模型就叫做 Aggregation 模型。
+这三种策略，后面的包含前面的，最后得到的这个模型就叫做 Aggregation 模型。
 
 第一种`选择`的方式，很简单也很普遍，但是它很依赖于模型的强度，只有一个很强的模型才能保证有很好的效果。
 
@@ -872,12 +872,17 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 最后总结整理一下：
 
-1. 初始化：<img src="http://latex.codecogs.com/svg.latex?{u^{(1)}=[\frac{1}{N},\frac{1}{N},\dots,\frac{1}{N}]}"/>
+1. 初始化
+    - <img src="http://latex.codecogs.com/svg.latex?{u^{(1)}=[\frac{1}{N},\frac{1}{N},\dots,\frac{1}{N}]}"/>
 2. 循环 _t_ = 1,2,...,_T_
-3. 得到 <img src="http://latex.codecogs.com/svg.latex?{g_{t}\,\gets\,\mathcal{A}(\mathcal{D},u^{(t)})}"/>
-4. 更新 <img src="http://latex.codecogs.com/svg.latex?{u^{(t+1)}\,\gets\,u^{(t)}\;\textrm{by}\;\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}\;\textrm{and}\;\epsilon_t=\frac{\sum_{n=1}^{N}u_n^{(t)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t)}}}"/>
-5. 计算 <img src="http://latex.codecogs.com/svg.latex?{\alpha_t=\ln({\blacklozenge_{t}})}"/>
-6. 最后得到 <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)}"/>
+3. 得到
+    - <img src="http://latex.codecogs.com/svg.latex?{g_{t}\,\gets\,\mathcal{A}(\mathcal{D},u^{(t)})}"/>
+4. 更新
+    - <img src="http://latex.codecogs.com/svg.latex?{u^{(t+1)}\,\gets\,u^{(t)}\;\textrm{by}\;\blacklozenge_{t}=\sqrt{\frac{1-\epsilon_t}{\epsilon_t}}\;\textrm{and}\;\epsilon_t=\frac{\sum_{n=1}^{N}u_n^{(t)}[\![\mathrm{y}_n\,\ne\,g_t(\mathbf{x}_n)]\!]}{\sum_{n=1}^{N}u_n^{(t)}}}"/>
+5. 计算
+    - <img src="http://latex.codecogs.com/svg.latex?{\alpha_t=\ln({\blacklozenge_{t}})}"/>
+6. 最后得到
+    - <img src="http://latex.codecogs.com/svg.latex?{G(\mathbf{x})=\textrm{sign}\bigg(\sum_{t=1}^T\alpha_t\cdot{g}_t(\mathbf{x})\bigg)}"/>
 
 其中 &alpha; 这么选表现了当 <i>&epsilon;</i><sub>t</sub> 越大时（表现越不好的 <i>g</i><sub>t</sub>），&blacklozenge;<sub>t</sub> 越小，从而 &alpha;<sub>t</sub> 越小（最后在 G 中贡献越小）。
 
@@ -1020,7 +1025,7 @@ Fully-grown tree 显然不一定是好的，比如当所有的数据都不一样
 
 上面的 **投影** 是投影到某几个维度，再延伸一下，这个 **投影** 也可以是投影到几个维度（比较少的维度）的组合，这样一来又进一步增加了随机性。
 
-###
+### Out-of-bag (OOB)
 
 
 
