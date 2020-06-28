@@ -921,9 +921,9 @@ Linear Blending 和 `模型选择` 很像，也扩大了模型的复杂度，会
 
 可以用两种模式来表示一个决策树：
 
-1. **路径表示**（每种情况下的结果）： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{t=1}^T[\![\mathbf{x}\,\textrm{on\,path\,}t]\!]\cdot\textrm{leaf}_t(\mathbf{x})}"/>
+1. **路径表示**（每种情况下的结果）： </br> <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{t=1}^T[\![\mathbf{x}\,\textrm{on\,path\,}t]\!]\cdot\textrm{leaf}_t(\mathbf{x})}"/>
 
-2. **递归表示**（每种情况下的子树）： <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{c=1}^C[\![b(\mathbf{x})=C]\!]\cdot{G}_c(\mathbf{x})}"/>
+2. **递归表示**（每种情况下的子树）： </br> <img src="http://ibm.codecogs.com/svg.latex?{G(\mathbf{x})=\sum_{c=1}^C[\![b(\mathbf{x})=C]\!]\cdot{G}_c(\mathbf{x})}"/>
 
 决策树有几个好处：
 1. **可解释的**
@@ -1008,7 +1008,7 @@ Fully-grown tree 显然不一定是好的，比如当所有的数据都不一样
 
 `决策树` 用分支规则区分数据，并递归建立子树，对不同的数据很敏感（尤其是对于 Fully-grown tree），因此有很高的 Variance；
 
-那么这两种`互补`的方法能不能结合起来？这就是随机森林：
+那么这两种`互补`的方法能不能结合起来？这就是 **随机森林**：
 
 用 `Bagging` 随机产生一组数据，再用 `决策树` 得到 Fully-grown tree，再平均 / 投票结果。
 
@@ -1022,6 +1022,22 @@ Fully-grown tree 显然不一定是好的，比如当所有的数据都不一样
 
 ### Out-of-bag (OOB)
 
+在 Bagging 的 Bootstrap 过程中，那些没有被选入训练的数据被称为 **Out-of-bag (OOB)** 数据。
 
+那么有多少 OOB 的数据呢？考虑我们有 _N_ 个数据（ _N_ 很大），每次 Bootstrap 也抽取 _N_ 个数据，那么（对于一个 _g_ ）一个数据是 OOB 数据的概率是： </br> <img src="http://ibm.codecogs.com/svg.latex?{g_t:(1-\frac{1}{N})^N=\frac{1}{(\frac{N}{N-1})^N}}=\frac{1}{(1+\frac{1}{N+1})^N}\approx\frac{1}{e}"/>
+
+因此大概有 30% 的数据是 OOB。
+
+那 OOB 的数据有什么意义呢？做 `Validation` ！
+
+但是 OOB 数据和 `Validation` 有点儿不一样，因为我们其实不需要对 <i>g</i><sub>t</sub> 做 Validation，我们只关心最后的到的 _G_ 。
+
+因此，对于一个数据，选择哪些使得整个数据是 OOB 的 <i>G</i><sub><i>N</i></sub> 计算错误，最后求和、平均：
+
+<img src="http://ibm.codecogs.com/svg.latex?{E_\textrm{oob}(G)=\frac{1}{N}\sum_{n=1}^{N}\textrm{err}(\mathrm{y}_{n},G_{n}^{-}(\mathbf{x}_{n}))}"/>
+
+因此，对于 `随机森林` 来说，一旦得到 _G_ ，就可以得到一个类似 Validation 的结果，不需要额外做 Validation 。而且在实际运用中，通常情况下这个类似 Validation 结果也会很准确。
+
+###
 
 <!--  -->
